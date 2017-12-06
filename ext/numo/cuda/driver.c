@@ -386,6 +386,38 @@ rb_cuModuleUnload(VALUE self, VALUE hmod)
     return Qnil;
 }
 
+// TODO(sonots): Support extra argument
+static VALUE
+rb_cuLaunchKernel(VALUE self, VALUE func, VALUE gridDim, VALUE blockDim, VALUE sharedMemBytes, VALUE hStream, VALUE kernelParams)
+{
+    CUfunction _func = (CUfunction)NUM2SIZET(func);
+    unsigned int _gridDimX = NUM2UINT(RARRAY_AREF(gridDim, 0));
+    unsigned int _gridDimY = NUM2UINT(RARRAY_AREF(gridDim, 1));
+    unsigned int _gridDimZ = NUM2UINT(RARRAY_AREF(gridDim, 2));
+    unsigned int _blockgDimX = NUM2UINT(RARRAY_AREF(gridDim, 0));
+    unsigned int _blockgDimY = NUM2UINT(RARRAY_AREF(gridDim, 1));
+    unsigned int _blockgDimZ = NUM2UINT(RARRAY_AREF(gridDim, 2));
+    unsigned int _sharedMemBytes = NUM2UINT(sharedMemBytes);
+    CUstream _hStream = (CUstream)NUM2SIZET(hStream);
+    int numKernelParams = RARRAY_LEN(kernelParams);
+    void** _kernelParams = (void **)malloc(numKernelParams * sizeof(void *));
+    void** _extra = 0;
+    // Need to retrieve pointer properly
+    int i;
+    for (i = 0; i < numKernelParams; i++) {
+        VALUE param = RARRAY_PTR(kernelParams)[i];
+        _kernelParams[i] = XXXXXXX(header);
+    }
+    CUresult status;
+
+    status = cuLaunchKernel(
+            _func, _gridDimX, _gridDimY, _gridDimZ,
+            _blockgDimX, _blockgDimY, _blockgDimZ,
+            _sharedMemBytes, _hstream, _kernelParams, _extra);
+    check_status(status);
+    return Qnil;
+}
+
 void
 Init_numo_cuda_driver()
 {
@@ -405,6 +437,7 @@ Init_numo_cuda_driver()
     rb_define_singleton_method(mDriver, "cuModuleLoad", rb_cuModuleLoad, 1);
     rb_define_singleton_method(mDriver, "cuModuleLoadData", rb_cuModuleLoadData, 1);
     rb_define_singleton_method(mDriver, "cuModuleUnload", rb_cuModuleUnload, 1);
+    rb_define_singleton_method(mDriver, "cuLaunchKernel", rb_cuLaunchKernel, 1);
 
     rb_define_singleton_method(mDriver, "cuDeviceGet", rb_cuDeviceGet, 1);
     rb_define_singleton_method(mDriver, "cuCtxCreate", rb_cuCtxCreate, 2);
