@@ -1838,12 +1838,14 @@ Init_narray()
     rb_define_singleton_method(cNArray, "inspect_rows", na_inspect_rows, 0);
     rb_define_singleton_method(cNArray, "inspect_rows=", na_inspect_rows_set, 1);
     rb_define_singleton_method(cNArray, "inspect_cols", na_inspect_cols, 0);
-    rb_define_singleton_method(cNArray, "inspect_cols=", na_inspect_cols_set, 1);
 
     /* Ruby allocation framework  */
     rb_undef_alloc_func(cNArray);
     rb_define_method(cNArray, "initialize", na_initialize, -2);
     rb_define_method(cNArray, "initialize_copy", na_initialize_copy, 1);
+
+    rb_define_singleton_method(cNArray, "as_cumo", na_as_cumo, 1);
+    rb_define_singleton_method(cNArray, "as_numo", na_as_numo, 1);
 
     rb_define_singleton_method(cNArray, "zeros", na_s_zeros, -1);
     rb_define_singleton_method(cNArray, "ones", na_s_ones, -1);
