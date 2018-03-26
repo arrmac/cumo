@@ -65,7 +65,7 @@ nary_step_new(
   VALUE excl
 )
 {
-    VALUE self = rb_obj_alloc(na_cStep);
+    VALUE self = rb_obj_alloc(cumo_na_cStep);
 
     step_init(self, beg, end, step, len, excl);
     return self;
@@ -79,7 +79,7 @@ nary_step_new2(
 )
 {
     VALUE beg, end, excl;
-    VALUE self = rb_obj_alloc(na_cStep);
+    VALUE self = rb_obj_alloc(cumo_na_cStep);
 
     //beg = rb_ivar_get(range, id_beg);
     beg = rb_funcall(range, id_beg, 0);
@@ -449,7 +449,7 @@ range_with_length( VALUE range, VALUE len )
 static VALUE
 nary_s_step( int argc, VALUE *argv, VALUE mod )
 {
-    VALUE self = rb_obj_alloc(na_cStep);
+    VALUE self = rb_obj_alloc(cumo_na_cStep);
     step_initialize(argc, argv, self);
     return self;
 }
@@ -460,7 +460,7 @@ nary_is_sequence( VALUE arg )
 {
     if ( rb_obj_is_kind_of(arg, rb_cRange) )
         return Qtrue;
-    if ( rb_obj_is_kind_of(arg, na_cStep) )
+    if ( rb_obj_is_kind_of(arg, cumo_na_cStep) )
         return Qtrue;
     return Qfalse;
 }
@@ -470,23 +470,23 @@ nary_is_sequence( VALUE arg )
 void
 Init_cumo_nary_step()
 {
-    na_cStep = rb_define_class_under(cumo_cNArray, "Step", rb_cObject);
-    rb_include_module(na_cStep, rb_mEnumerable);
-    rb_define_method(na_cStep, "initialize", step_initialize, -1);
+    cumo_na_cStep = rb_define_class_under(cumo_cNArray, "Step", rb_cObject);
+    rb_include_module(cumo_na_cStep, rb_mEnumerable);
+    rb_define_method(cumo_na_cStep, "initialize", step_initialize, -1);
 
-    //rb_define_method(na_cStep, "each", step_each, 0);
+    //rb_define_method(cumo_na_cStep, "each", step_each, 0);
 
-    rb_define_method(na_cStep, "first", step_first, 0);
-    rb_define_method(na_cStep, "last", step_last, 0);
-    rb_define_method(na_cStep, "begin", step_first, 0);
-    rb_define_method(na_cStep, "end", step_last, 0);
-    rb_define_method(na_cStep, "step", step_step, 0);
-    rb_define_method(na_cStep, "length", step_length, 0);
-    rb_define_method(na_cStep, "size", step_length, 0);
-    rb_define_method(na_cStep, "exclude_end?", step_exclude_end_p, 0);
-    //rb_define_method(na_cStep, "to_s", step_to_s, 0);
-    //rb_define_method(na_cStep, "inspect", step_inspect, 0);
-    //rb_define_method(na_cStep, "parameters", nary_step_parameters, 1);
+    rb_define_method(cumo_na_cStep, "first", step_first, 0);
+    rb_define_method(cumo_na_cStep, "last", step_last, 0);
+    rb_define_method(cumo_na_cStep, "begin", step_first, 0);
+    rb_define_method(cumo_na_cStep, "end", step_last, 0);
+    rb_define_method(cumo_na_cStep, "step", step_step, 0);
+    rb_define_method(cumo_na_cStep, "length", step_length, 0);
+    rb_define_method(cumo_na_cStep, "size", step_length, 0);
+    rb_define_method(cumo_na_cStep, "exclude_end?", step_exclude_end_p, 0);
+    //rb_define_method(cumo_na_cStep, "to_s", step_to_s, 0);
+    //rb_define_method(cumo_na_cStep, "inspect", step_inspect, 0);
+    //rb_define_method(cumo_na_cStep, "parameters", nary_step_parameters, 1);
 
     rb_define_method(rb_cRange, "%", range_with_step, 1);
     rb_define_method(rb_cRange, "*", range_with_length, 1);

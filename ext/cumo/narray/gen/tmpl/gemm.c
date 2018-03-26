@@ -181,7 +181,7 @@ static VALUE
         CHECK_DIM_GE(na3,2);
         nc = ROW_SIZE(na3);
         if (nc < nb) {
-            rb_raise(nary_eShapeError,"nc=%d must be >= nb=%d",nc,nb);
+            rb_raise(cumo_nary_eShapeError,"nc=%d must be >= nb=%d",nc,nb);
         }
         //CHECK_LEADING_GE("ldc",g.ldc,"m",ma);
     }

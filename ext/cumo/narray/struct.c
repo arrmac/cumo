@@ -732,7 +732,7 @@ nary_struct_store(VALUE self, VALUE obj)
         nary_struct_store_struct(self,obj);
         return self;
     }
-    rb_raise(nary_eCastError, "unknown conversion from %s to %s",
+    rb_raise(cumo_nary_eCastError, "unknown conversion from %s to %s",
              rb_class2name(CLASS_OF(obj)),
              rb_class2name(CLASS_OF(self)));
     return self;

@@ -117,7 +117,7 @@ static int na_mdai_object_type(int type, VALUE v)
     if (rb_obj_is_kind_of(v, rb_cRange)) {
         MDAI_ATTR_TYPE(type,v,begin);
         MDAI_ATTR_TYPE(type,v,end);
-    } else if (rb_obj_is_kind_of(v, na_cStep)) {
+    } else if (rb_obj_is_kind_of(v, cumo_na_cStep)) {
         MDAI_ATTR_TYPE(type,v,begin);
         MDAI_ATTR_TYPE(type,v,end);
         MDAI_ATTR_TYPE(type,v,step);
@@ -205,7 +205,7 @@ na_mdai_investigate(na_mdai_t *mdai, int ndim)
             }
         }
         else
-        if (rb_obj_is_kind_of(v, rb_cRange) || rb_obj_is_kind_of(v, na_cStep)) {
+        if (rb_obj_is_kind_of(v, rb_cRange) || rb_obj_is_kind_of(v, cumo_na_cStep)) {
             nary_step_sequence(v,&length,&dbeg,&dstep);
             len += length-1;
             mdai->type = na_mdai_object_type(mdai->type, v);
@@ -331,7 +331,7 @@ check_subclass_of_narray(VALUE dtype)
             return;
         }
     }
-    rb_raise(nary_eCastError, "cannot convert to NArray");
+    rb_raise(cumo_nary_eCastError, "cannot convert to NArray");
 }
 
 

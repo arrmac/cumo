@@ -1800,7 +1800,7 @@ uint16_s_cast(VALUE type, VALUE obj)
     }
     
 #line 41 &quot;narray/gen/tmpl/cast.c&quot;
-    rb_raise(nary_eCastError,&quot;cannot cast to %s&quot;,rb_class2name(type));
+    rb_raise(cumo_nary_eCastError,&quot;cannot cast to %s&quot;,rb_class2name(type));
     return Qnil;
     
 }</pre>
@@ -1940,7 +1940,7 @@ uint16_s_cast(VALUE type, VALUE obj)
     }
     
 #line 41 &quot;narray/gen/tmpl/cast.c&quot;
-    rb_raise(nary_eCastError,&quot;cannot cast to %s&quot;,rb_class2name(type));
+    rb_raise(cumo_nary_eCastError,&quot;cannot cast to %s&quot;,rb_class2name(type));
     return Qnil;
     
 }</pre>
@@ -4852,7 +4852,7 @@ uint16_eye(int argc, VALUE *argv, VALUE self)
     GetNArray(self,na);
     nd = na-&gt;ndim;
     if (nd &lt; 2) {
-        rb_raise(nary_eDimensionError,&quot;less than 2-d array&quot;);
+        rb_raise(cumo_nary_eDimensionError,&quot;less than 2-d array&quot;);
     }
 
     // Diagonal offset from the main diagonal.
@@ -8359,7 +8359,7 @@ uint16_store(VALUE self, VALUE obj)
 
     
 #line 36 &quot;narray/gen/tmpl/store.c&quot;
-    rb_raise(nary_eCastError, &quot;unknown conversion from %s to %s&quot;,
+    rb_raise(cumo_nary_eCastError, &quot;unknown conversion from %s to %s&quot;,
              rb_class2name(CLASS_OF(obj)),
              rb_class2name(CLASS_OF(self)));
     

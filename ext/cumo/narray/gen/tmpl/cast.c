@@ -38,7 +38,7 @@ static VALUE
     <% if is_object %>
     return robject_new_dim0(obj);
     <% else %>
-    rb_raise(nary_eCastError,"cannot cast to %s",rb_class2name(type));
+    rb_raise(cumo_nary_eCastError,"cannot cast to %s",rb_class2name(type));
     return Qnil;
     <% end %>
 }

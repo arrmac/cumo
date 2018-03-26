@@ -266,10 +266,10 @@ cumo_na_alloc_shape(narray_t *na, int ndim)
         break;
     default:
         if (ndim < 0) {
-            rb_raise(nary_eDimensionError,"ndim=%d is negative", ndim);
+            rb_raise(cumo_nary_eDimensionError,"ndim=%d is negative", ndim);
         }
         if (ndim > NA_MAX_DIMENSION) {
-            rb_raise(nary_eDimensionError,"ndim=%d is too many", ndim);
+            rb_raise(cumo_nary_eDimensionError,"ndim=%d is too many", ndim);
         }
         na->shape = ALLOC_N(size_t, ndim);
     }
@@ -962,7 +962,7 @@ cumo_na_expand_dims(VALUE self, VALUE vdim)
 
     dim = NUM2INT(vdim);
     if (dim < -nd-1 || dim > nd) {
-        rb_raise(nary_eDimensionError,"invalid axis (%d for %dD NArray)",
+        rb_raise(cumo_nary_eDimensionError,"invalid axis (%d for %dD NArray)",
                  dim,nd);
     }
     if (dim < 0) {
@@ -1191,7 +1191,7 @@ nary_s_from_binary(int argc, VALUE *argv, VALUE type)
         case T_ARRAY:
             nd = RARRAY_LEN(vshape);
             if (nd == 0 || nd > NA_MAX_DIMENSION) {
-                rb_raise(nary_eDimensionError,"too long or empty shape (%d)", nd);
+                rb_raise(cumo_nary_eDimensionError,"too long or empty shape (%d)", nd);
             }
             shape = ALLOCA_N(size_t,nd);
             len = 1;
@@ -1440,7 +1440,7 @@ na_get_reduce_flag_from_narray(int naryc, VALUE *naryv, int *max_arg)
     }
     GetNArray(naryv[0],na);
     if (na->size==0) {
-        rb_raise(nary_eShapeError,"cannot reduce empty NArray");
+        rb_raise(cumo_nary_eShapeError,"cannot reduce empty NArray");
     }
     reduce = na->reduce;
     ndim = ndim0 = na->ndim;
@@ -1449,10 +1449,10 @@ na_get_reduce_flag_from_narray(int naryc, VALUE *naryv, int *max_arg)
     for (i=0; i<naryc; i++) {
         GetNArray(naryv[i],na);
         if (na->size==0) {
-            rb_raise(nary_eShapeError,"cannot reduce empty NArray");
+            rb_raise(cumo_nary_eShapeError,"cannot reduce empty NArray");
         }
         if (TEST_COLUMN_MAJOR(naryv[i]) != rowmaj) {
-            rb_raise(nary_eDimensionError,"dimension order is different");
+            rb_raise(cumo_nary_eDimensionError,"dimension order is different");
         }
         if (na->ndim > ndim) { // maximum dimension
             ndim = na->ndim;
@@ -1495,16 +1495,16 @@ na_get_reduce_flag_from_axes(VALUE na_obj, VALUE axes)
             beg = FIX2INT(v);
             if (beg<0) beg+=ndim;
             if (beg>=ndim || beg<0) {
-                rb_raise(nary_eDimensionError,"dimension is out of range");
+                rb_raise(cumo_nary_eDimensionError,"dimension is out of range");
             }
             len = 1;
             step = 0;
             //printf("beg=%d step=%d len=%d\n",beg,step,len);
         } else if (rb_obj_is_kind_of(v,rb_cRange) ||
-                   rb_obj_is_kind_of(v,na_cStep)) {
+                   rb_obj_is_kind_of(v,cumo_na_cStep)) {
             nary_step_array_index( v, ndim, &len, &beg, &step );
         } else {
-            rb_raise(nary_eDimensionError, "invalid dimension argument %s",
+            rb_raise(cumo_nary_eDimensionError, "invalid dimension argument %s",
                      rb_obj_classname(v));
         }
         for (j=0; j<len; j++) {
@@ -1849,11 +1849,11 @@ Init_cumo_narray()
 
     rb_define_const(cumo_cNArray, "VERSION", rb_str_new2(NARRAY_VERSION));
 
-    nary_eCastError = rb_define_class_under(cumo_cNArray, "CastError", rb_eStandardError);
-    nary_eShapeError = rb_define_class_under(cumo_cNArray, "ShapeError", rb_eStandardError);
-    nary_eOperationError = rb_define_class_under(cumo_cNArray, "OperationError", rb_eStandardError);
-    nary_eDimensionError = rb_define_class_under(cumo_cNArray, "DimensionError", rb_eStandardError);
-    nary_eValueError = rb_define_class_under(cumo_cNArray, "ValueError", rb_eStandardError);
+    cumo_nary_eCastError = rb_define_class_under(cumo_cNArray, "CastError", rb_eStandardError);
+    cumo_nary_eShapeError = rb_define_class_under(cumo_cNArray, "ShapeError", rb_eStandardError);
+    cumo_nary_eOperationError = rb_define_class_under(cumo_cNArray, "OperationError", rb_eStandardError);
+    cumo_nary_eDimensionError = rb_define_class_under(cumo_cNArray, "DimensionError", rb_eStandardError);
+    cumo_nary_eValueError = rb_define_class_under(cumo_cNArray, "ValueError", rb_eStandardError);
 
     rb_define_singleton_method(cumo_cNArray, "debug=", na_debug_set, 1);
     rb_define_singleton_method(cumo_cNArray, "profile", na_profile, 0);

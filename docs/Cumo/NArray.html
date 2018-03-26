@@ -3823,7 +3823,7 @@ nary_s_from_binary(int argc, VALUE *argv, VALUE type)
         case T_ARRAY:
             nd = RARRAY_LEN(vshape);
             if (nd == 0 || nd &gt; NA_MAX_DIMENSION) {
-                rb_raise(nary_eDimensionError,&quot;too long or empty shape (%d)&quot;, nd);
+                rb_raise(cumo_nary_eDimensionError,&quot;too long or empty shape (%d)&quot;, nd);
             }
             shape = ALLOCA_N(size_t,nd);
             len = 1;
@@ -7037,7 +7037,7 @@ na_diagonal(int argc, VALUE *argv, VALUE self)
     GetNArray(self,na);
     nd = na-&gt;ndim;
     if (nd &lt; 2) {
-        rb_raise(nary_eDimensionError,&quot;less than 2-d array&quot;);
+        rb_raise(cumo_nary_eDimensionError,&quot;less than 2-d array&quot;);
     }
 
     if (vaxes) {
@@ -7696,7 +7696,7 @@ na_expand_dims(VALUE self, VALUE vdim)
 
     dim = NUM2INT(vdim);
     if (dim &lt; -nd-1 || dim &gt; nd) {
-        rb_raise(nary_eDimensionError,&quot;invalid axis (%d for %dD NArray)&quot;,
+        rb_raise(cumo_nary_eDimensionError,&quot;invalid axis (%d for %dD NArray)&quot;,
                  dim,nd);
     }
     if (dim &lt; 0) {

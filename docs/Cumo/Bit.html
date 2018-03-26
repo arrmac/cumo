@@ -1011,7 +1011,7 @@ bit_s_cast(VALUE type, VALUE obj)
     }
     
 #line 41 &quot;narray/gen/tmpl/cast.c&quot;
-    rb_raise(nary_eCastError,&quot;cannot cast to %s&quot;,rb_class2name(type));
+    rb_raise(cumo_nary_eCastError,&quot;cannot cast to %s&quot;,rb_class2name(type));
     return Qnil;
     
 }</pre>
@@ -1151,7 +1151,7 @@ bit_s_cast(VALUE type, VALUE obj)
     }
     
 #line 41 &quot;narray/gen/tmpl/cast.c&quot;
-    rb_raise(nary_eCastError,&quot;cannot cast to %s&quot;,rb_class2name(type));
+    rb_raise(cumo_nary_eCastError,&quot;cannot cast to %s&quot;,rb_class2name(type));
     return Qnil;
     
 }</pre>
@@ -3630,7 +3630,7 @@ bit_store(VALUE self, VALUE obj)
 
     
 #line 36 &quot;narray/gen/tmpl/store.c&quot;
-    rb_raise(nary_eCastError, &quot;unknown conversion from %s to %s&quot;,
+    rb_raise(cumo_nary_eCastError, &quot;unknown conversion from %s to %s&quot;,
              rb_class2name(CLASS_OF(obj)),
              rb_class2name(CLASS_OF(self)));
     

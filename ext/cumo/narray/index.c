@@ -290,7 +290,7 @@ na_index_parse_each(volatile VALUE a, ssize_t size, int i, na_index_arg_t *q)
         else if (rb_obj_is_kind_of(a, rb_cEnumerator)) {
             na_parse_enumerator(a, i, size, q);
         }
-        else if (rb_obj_is_kind_of(a, na_cStep)) {
+        else if (rb_obj_is_kind_of(a, cumo_na_cStep)) {
             ssize_t beg, step, n;
             nary_step_array_index(a, size, (size_t*)(&n), &beg, &step);
             na_index_set_step(q,i,n,beg,step);

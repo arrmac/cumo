@@ -4785,7 +4785,7 @@ robject_eye(int argc, VALUE *argv, VALUE self)
     GetNArray(self,na);
     nd = na-&gt;ndim;
     if (nd &lt; 2) {
-        rb_raise(nary_eDimensionError,&quot;less than 2-d array&quot;);
+        rb_raise(cumo_nary_eDimensionError,&quot;less than 2-d array&quot;);
     }
 
     // Diagonal offset from the main diagonal.

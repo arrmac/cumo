@@ -496,7 +496,7 @@ ndloop_check_shape(na_md_loop_t *lp, int nf_dim, narray_t *na)
                 lp->n[i] = n;
             } else if (lp->n[i] != n) {
                 // inconsistent array shape
-                rb_raise(nary_eShapeError,"shape1[%d](=%"SZF"u) != shape2[%d](=%"SZF"u)",
+                rb_raise(cumo_nary_eShapeError,"shape1[%d](=%"SZF"u) != shape2[%d](=%"SZF"u)",
                          i, lp->n[i], k, n);
             }
         }
@@ -608,7 +608,7 @@ na->shape[i] == lp->n[ dim_map[i] ]
             GetNArray(v,na);
             nf_dim = nf->ain[j].dim;
             if (nf_dim > na->ndim) {
-                rb_raise(nary_eDimensionError,"requires >= %d-dimensioal array "
+                rb_raise(cumo_nary_eDimensionError,"requires >= %d-dimensioal array "
                          "while %d-dimensional array is given",nf_dim,na->ndim);
             }
             ndloop_check_shape(lp, nf_dim, na);
@@ -1677,7 +1677,7 @@ loop_store_subnarray(ndfunc_t *nf, na_md_loop_t *lp, int i0, size_t *c, VALUE a)
     }
     GetNArray(a,na);
     if (na->ndim != nd-i0+1) {
-        rb_raise(nary_eShapeError, "mismatched dimension of sub-narray: "
+        rb_raise(cumo_nary_eShapeError, "mismatched dimension of sub-narray: "
                  "nd_src=%d, nd_dst=%d", na->ndim, nd-i0+1);
     }
     dim_map = ALLOCA_N(int, na->ndim);

@@ -162,7 +162,7 @@ static inline int
 check_axis(int axis, int ndim)
 {
     if (axis < -ndim || axis >= ndim) {
-        rb_raise(nary_eDimensionError,"invalid axis (%d for %d-dimension)",
+        rb_raise(cumo_nary_eDimensionError,"invalid axis (%d for %d-dimension)",
                  axis, ndim);
     }
     if (axis < 0) {
@@ -633,7 +633,7 @@ na_diagonal(int argc, VALUE *argv, VALUE self)
     GetNArray(self,na);
     nd = na->ndim;
     if (nd < 2) {
-        rb_raise(nary_eDimensionError,"less than 2-d array");
+        rb_raise(cumo_nary_eDimensionError,"less than 2-d array");
     }
 
     if (vaxes) {
@@ -902,11 +902,11 @@ cumo_na_dot(VALUE self, VALUE other)
     GetNArray(a1,na1);
     GetNArray(a2,na2);
     if (na1->ndim==0 || na2->ndim==0) {
-        rb_raise(nary_eDimensionError,"zero dimensional narray");
+        rb_raise(cumo_nary_eDimensionError,"zero dimensional narray");
     }
     if (na2->ndim > 1) {
         if (na1->shape[na1->ndim-1] != na2->shape[na2->ndim-2]) {
-            rb_raise(nary_eShapeError,"shape mismatch: self.shape[-1](=%"SZF"d) != other.shape[-2](=%"SZF"d)",
+            rb_raise(cumo_nary_eShapeError,"shape mismatch: self.shape[-1](=%"SZF"d) != other.shape[-2](=%"SZF"d)",
                      na1->shape[na1->ndim-1], na2->shape[na2->ndim-2]);
         }
         // insert new axis [ ..., last-1-dim, newaxis*other.ndim, last-dim ]
