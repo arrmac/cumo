@@ -90,7 +90,7 @@ na_make_view_struct(VALUE self, VALUE dtype, VALUE offset)
     GetNArray(self,na);
 
     // build from Cumo::Struct
-    if (rb_obj_is_kind_of(dtype,cNArray)) {
+    if (rb_obj_is_kind_of(dtype,cumo_cNArray)) {
 	GetNArray(dtype,nt);
         ndim = na->ndim + nt->ndim;
         shape = ALLOCA_N(size_t,ndim);
@@ -117,7 +117,7 @@ na_make_view_struct(VALUE self, VALUE dtype, VALUE offset)
         }
         klass = CLASS_OF(self);
         if (TYPE(dtype)==T_CLASS) {
-            if (RTEST(rb_class_inherited_p(dtype,cNArray))) {
+            if (RTEST(rb_class_inherited_p(dtype,cumo_cNArray))) {
                 klass = dtype;
             }
         }
@@ -347,7 +347,7 @@ nstruct_add_type(VALUE type, int argc, VALUE *argv, VALUE nst)
 
     id = rb_to_id(name);
     name = ID2SYM(id);
-    if (rb_obj_is_kind_of(type,cNArray)) {
+    if (rb_obj_is_kind_of(type,cumo_cNArray)) {
         narray_t *na;
         GetNArray(type,na);
         type = CLASS_OF(type);
@@ -477,7 +477,7 @@ check_array(VALUE item) {
     if (TYPE(item) == T_ARRAY) {
         return 1;
     }
-    if (RTEST(rb_obj_is_kind_of(item, cNArray))) {
+    if (RTEST(rb_obj_is_kind_of(item, cumo_cNArray))) {
         GetNArray(item,na);
         if (na->ndim == 1) {
             return 1;
@@ -505,7 +505,7 @@ check_array_1d(VALUE item, size_t size) {
         }
         return 1;
     }
-    if (RTEST(rb_obj_is_kind_of(item, cNArray))) {
+    if (RTEST(rb_obj_is_kind_of(item, cumo_cNArray))) {
         GetNArray(item,na);
         if (na->ndim == 1 && na->size == size) {
             return 1;
@@ -561,7 +561,7 @@ nst_check_compatibility(VALUE nst, VALUE ary)
 
             //vnc = na_ary_composition(item);
             //Data_Get_Struct(vnc, na_compose_t, nc);
-            vnc = na_s_new_like(cNArray, item);
+            vnc = na_s_new_like(cumo_cNArray, item);
             GetNArray(vnc,nc);
             if (nt->ndim != nc->ndim) {
                 return Qfalse;

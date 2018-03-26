@@ -921,36 +921,36 @@ cumo_na_dot(VALUE self, VALUE other)
 void
 Init_cumo_nary_data()
 {
-    rb_define_method(cNArray, "copy", na_copy, 0); // deprecated
+    rb_define_method(cumo_cNArray, "copy", na_copy, 0); // deprecated
 
-    rb_define_method(cNArray, "flatten", na_flatten, 0);
-    rb_define_method(cNArray, "swapaxes", na_swapaxes, 2);
-    rb_define_method(cNArray, "transpose", na_transpose, -1);
+    rb_define_method(cumo_cNArray, "flatten", na_flatten, 0);
+    rb_define_method(cumo_cNArray, "swapaxes", na_swapaxes, 2);
+    rb_define_method(cumo_cNArray, "transpose", na_transpose, -1);
 
-    rb_define_method(cNArray, "reshape", na_reshape,-1);
-    rb_define_method(cNArray, "reshape!", na_reshape_bang,-1);
+    rb_define_method(cumo_cNArray, "reshape", na_reshape,-1);
+    rb_define_method(cumo_cNArray, "reshape!", na_reshape_bang,-1);
     /*
-    rb_define_alias(cNArray,  "shape=","reshape!");
+    rb_define_alias(cumo_cNArray,  "shape=","reshape!");
     */
-    rb_define_method(cNArray, "diagonal", na_diagonal,-1);
+    rb_define_method(cumo_cNArray, "diagonal", na_diagonal,-1);
 
-    rb_define_method(cNArray, "swap_byte", nary_swap_byte, 0);
+    rb_define_method(cumo_cNArray, "swap_byte", nary_swap_byte, 0);
 #ifdef DYNAMIC_ENDIAN
 #else
 #ifdef WORDS_BIGENDIAN
 #else // LITTLE_ENDIAN
-    rb_define_alias(cNArray, "hton", "swap_byte");
-    rb_define_alias(cNArray, "network_order?", "byte_swapped?");
-    rb_define_alias(cNArray, "little_endian?", "host_order?");
-    rb_define_alias(cNArray, "vacs_order?", "host_order?");
+    rb_define_alias(cumo_cNArray, "hton", "swap_byte");
+    rb_define_alias(cumo_cNArray, "network_order?", "byte_swapped?");
+    rb_define_alias(cumo_cNArray, "little_endian?", "host_order?");
+    rb_define_alias(cumo_cNArray, "vacs_order?", "host_order?");
 #endif
 #endif
-    rb_define_method(cNArray, "to_network", nary_to_network, 0);
-    rb_define_method(cNArray, "to_vacs", nary_to_vacs, 0);
-    rb_define_method(cNArray, "to_host", nary_to_host, 0);
-    rb_define_method(cNArray, "to_swapped", nary_to_swapped, 0);
+    rb_define_method(cumo_cNArray, "to_network", nary_to_network, 0);
+    rb_define_method(cumo_cNArray, "to_vacs", nary_to_vacs, 0);
+    rb_define_method(cumo_cNArray, "to_host", nary_to_host, 0);
+    rb_define_method(cumo_cNArray, "to_swapped", nary_to_swapped, 0);
 
-    //rb_define_method(cNArray, "dot", cumo_na_dot, 1);
+    //rb_define_method(cumo_cNArray, "dot", cumo_na_dot, 1);
 
     id_mulsum       = rb_intern("mulsum");
     sym_mulsum      = ID2SYM(id_mulsum);

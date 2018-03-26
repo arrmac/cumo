@@ -134,7 +134,7 @@ extern const rb_data_type_t na_data_type;
 //EXTERN const int na_sizeof[NA_NTYPES+1];
 #endif
 
-#define cNArray cumo_cNArray
+//#define cNArray cumo_cNArray
 #define mCumo rb_mCumo
 //#define na_upcast(x,y) cumo_na_upcast(x,y)
 
@@ -153,7 +153,7 @@ extern VALUE cumo_cUInt32;
 extern VALUE cumo_cUInt16;
 extern VALUE cumo_cUInt8;
 extern VALUE cumo_cRObject;
-extern VALUE na_cStep;
+extern VALUE cumo_na_cStep;
 #ifndef HAVE_RB_CCOMPLEX
 extern VALUE rb_cComplex;
 #endif
@@ -380,14 +380,14 @@ _na_get_narray_t(VALUE obj, unsigned char na_type)
 #define NA_FL1_INIT            0
 
 
-#define IsNArray(obj) (rb_obj_is_kind_of(obj,cNArray)==Qtrue)
+#define IsNArray(obj) (rb_obj_is_kind_of(obj,cumo_cNArray)==Qtrue)
 
 #define DEBUG_PRINT(v) puts(StringValueCStr(rb_funcall(v,rb_intern("inspect"),0)))
 
 #define NA_IsNArray(obj) \
-  (rb_obj_is_kind_of(obj,cNArray)==Qtrue)
+  (rb_obj_is_kind_of(obj,cumo_cNArray)==Qtrue)
 #define NA_IsArray(obj) \
-  (TYPE(obj)==T_ARRAY || rb_obj_is_kind_of(obj,cNArray)==Qtrue)
+  (TYPE(obj)==T_ARRAY || rb_obj_is_kind_of(obj,cumo_cNArray)==Qtrue)
 
 #define NUM2REAL(v)  NUM2DBL( rb_funcall((v),na_id_real,0) )
 #define NUM2IMAG(v)  NUM2DBL( rb_funcall((v),na_id_imag,0) )

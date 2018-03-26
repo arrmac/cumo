@@ -2,7 +2,7 @@
       Document-class: <%= full_class_name %>
       <%= description %>
     */
-    cT = rb_define_class_under(<%=ns_var%>, "<%=class_name%>", cNArray);
+    cT = rb_define_class_under(<%=ns_var%>, "<%=class_name%>", cumo_cNArray);
 
   <% for x in class_alias %>
     // alias of <%=class_name%>

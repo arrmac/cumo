@@ -266,7 +266,7 @@ VALUE nary_math_method_missing(int argc, VALUE *argv, VALUE mod)
 
 	ans = rb_funcall2(typemod,id_send,argc,argv);
 
-	if (!RTEST(rb_class_inherited_p(type,cNArray)) &amp;&amp;
+	if (!RTEST(rb_class_inherited_p(type,cumo_cNArray)) &amp;&amp;
 	    IsNArray(ans) ) {
 	    ans = rb_funcall(ans,id_extract,0);
 	}

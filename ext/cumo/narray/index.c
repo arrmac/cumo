@@ -817,7 +817,7 @@ na_get_result_dimension(VALUE self, int argc, VALUE *argv, ssize_t stride, size_
 void
 Init_cumo_nary_index()
 {
-    rb_define_method(cNArray, "slice", na_slice, -1);
+    rb_define_method(cumo_cNArray, "slice", na_slice, -1);
 
     sym_ast        = ID2SYM(rb_intern("*"));
     sym_all        = ID2SYM(rb_intern("all"));

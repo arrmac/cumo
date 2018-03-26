@@ -314,7 +314,7 @@ static inline VALUE
 update_type(VALUE *ptype, VALUE dtype)
 {
     if (ptype) {
-        if (*ptype == cNArray || !RTEST(*ptype)) {
+        if (*ptype == cumo_cNArray || !RTEST(*ptype)) {
             *ptype = dtype;
         } else {
             dtype = *ptype;
@@ -327,7 +327,7 @@ static inline void
 check_subclass_of_narray(VALUE dtype)
 {
     if (RTEST(rb_obj_is_kind_of(dtype, rb_cClass))) {
-        if (RTEST(rb_funcall(dtype, id_le, 1, cNArray))) {
+        if (RTEST(rb_funcall(dtype, id_le, 1, cumo_cNArray))) {
             return;
         }
     }
@@ -621,11 +621,11 @@ na_ary_composition_for_struct(VALUE nstruct, VALUE ary)
 void
 Init_cumo_nary_array()
 {
-    rb_define_singleton_method(cNArray, "array_shape", na_s_array_shape, 1);
-    rb_define_singleton_method(cNArray, "array_type", na_s_array_type, 1);
-    rb_define_singleton_method(cNArray, "new_like", na_s_new_like, 1);
+    rb_define_singleton_method(cumo_cNArray, "array_shape", na_s_array_shape, 1);
+    rb_define_singleton_method(cumo_cNArray, "array_type", na_s_array_type, 1);
+    rb_define_singleton_method(cumo_cNArray, "new_like", na_s_new_like, 1);
 
-    rb_define_singleton_method(cNArray, "[]", nary_s_bracket, -2);
+    rb_define_singleton_method(cumo_cNArray, "[]", nary_s_bracket, -2);
 
     id_begin   = rb_intern("begin");
     id_end     = rb_intern("end");

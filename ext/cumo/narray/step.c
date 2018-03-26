@@ -470,7 +470,7 @@ nary_is_sequence( VALUE arg )
 void
 Init_cumo_nary_step()
 {
-    na_cStep = rb_define_class_under(cNArray, "Step", rb_cObject);
+    na_cStep = rb_define_class_under(cumo_cNArray, "Step", rb_cObject);
     rb_include_module(na_cStep, rb_mEnumerable);
     rb_define_method(na_cStep, "initialize", step_initialize, -1);
 
@@ -491,7 +491,7 @@ Init_cumo_nary_step()
     rb_define_method(rb_cRange, "%", range_with_step, 1);
     rb_define_method(rb_cRange, "*", range_with_length, 1);
 
-    rb_define_singleton_method(cNArray, "step", nary_s_step, -1);
+    rb_define_singleton_method(cumo_cNArray, "step", nary_s_step, -1);
 
     id_beg  = rb_intern("begin");
     id_end  = rb_intern("end");

@@ -20,7 +20,7 @@ nary_type_s_upcast(VALUE type1, VALUE type2)
     result_type = rb_hash_aref(upcast_hash, type2);
     if (NIL_P(result_type)) {
         if (TYPE(type2)==T_CLASS) {
-            if ( RTEST(rb_class_inherited_p(type2,cNArray)) ) {
+            if ( RTEST(rb_class_inherited_p(type2,cumo_cNArray)) ) {
                 upcast_hash = rb_const_get(type2, id_UPCAST);
                 result_type = rb_hash_aref(upcast_hash, type1);
             }
@@ -32,10 +32,10 @@ nary_type_s_upcast(VALUE type1, VALUE type2)
 
 VALUE nary_math_cast2(VALUE type1, VALUE type2)
 {
-    if ( RTEST(rb_class_inherited_p( type1, cNArray )) ){
+    if ( RTEST(rb_class_inherited_p( type1, cumo_cNArray )) ){
 	return nary_type_s_upcast( type1, type2 );
     }
-    if ( RTEST(rb_class_inherited_p( type2, cNArray )) ){
+    if ( RTEST(rb_class_inherited_p( type2, cumo_cNArray )) ){
 	return nary_type_s_upcast( type2, type1 );
     }
     if ( RTEST(rb_class_inherited_p( type1, rb_cNumeric )) &&
@@ -92,7 +92,7 @@ VALUE nary_math_method_missing(int argc, VALUE *argv, VALUE mod)
 
 	ans = rb_funcall2(typemod,id_send,argc,argv);
 
-	if (!RTEST(rb_class_inherited_p(type,cNArray)) &&
+	if (!RTEST(rb_class_inherited_p(type,cumo_cNArray)) &&
 	    IsNArray(ans) ) {
 	    ans = rb_funcall(ans,id_extract,0);
 	}

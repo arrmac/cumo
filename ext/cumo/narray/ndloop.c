@@ -216,7 +216,7 @@ ndloop_cast_required(VALUE type, VALUE value)
 static int
 ndloop_castable_type(VALUE type)
 {
-    return rb_obj_is_kind_of(type, rb_cClass) && RTEST(rb_class_inherited_p(type, cNArray));
+    return rb_obj_is_kind_of(type, rb_cClass) && RTEST(rb_class_inherited_p(type, cumo_cNArray));
 }
 
 static void
@@ -814,7 +814,7 @@ ndloop_set_output(ndfunc_t *nf, na_md_loop_t *lp, VALUE args)
         t = ndloop_get_arg_type(nf,args,t);
 
         if (rb_obj_is_kind_of(t, rb_cClass)) {
-            if (RTEST(rb_class_inherited_p(t, cNArray))) {
+            if (RTEST(rb_class_inherited_p(t, cumo_cNArray))) {
                 // NArray
                 v = ndloop_set_output_narray(nf,lp,k,t,args);
                 rb_ary_push(results, v);
