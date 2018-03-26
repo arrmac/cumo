@@ -136,7 +136,7 @@ extern const rb_data_type_t na_data_type;
 
 //#define cNArray cumo_cNArray
 #define mCumo rb_mCumo
-//#define na_upcast(x,y) cumo_na_upcast(x,y)
+//#define cumo_na_upcast(x,y) cumo_na_upcast(x,y)
 
 /* global variables within this module */
 extern VALUE cumo_cBit;

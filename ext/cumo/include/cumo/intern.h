@@ -4,9 +4,9 @@
 void cumo_debug_breakpoint(void);
 
 #define rb_narray_new nary_new
-VALUE nary_new(VALUE elem, int ndim, size_t *shape);
+VALUE cumo_nary_new(VALUE elem, int ndim, size_t *shape);
 #define rb_narray_view_new nary_view_new
-VALUE nary_view_new(VALUE elem, int ndim, size_t *shape);
+VALUE cumo_nary_view_new(VALUE elem, int ndim, size_t *shape);
 #define rb_narray_debug_info nary_debug_info
 VALUE nary_debug_info(VALUE);
 
@@ -20,14 +20,14 @@ VALUE nary_s_allocate_view(VALUE klass);
 #define na_s_new_like nary_s_new_like
 VALUE nary_s_new_like(VALUE type, VALUE obj);
 
-void na_alloc_shape(narray_t *na, int ndim);
-void na_array_to_internal_shape(VALUE self, VALUE ary, size_t *shape);
-void na_index_arg_to_internal_order(int argc, VALUE *argv, VALUE self);
-void na_setup_shape(narray_t *na, int ndim, size_t *shape);
+void cumo_na_alloc_shape(narray_t *na, int ndim);
+void cumo_na_array_to_internal_shape(VALUE self, VALUE ary, size_t *shape);
+void cumo_na_index_arg_to_internal_order(int argc, VALUE *argv, VALUE self);
+void cumo_na_setup_shape(narray_t *na, int ndim, size_t *shape);
 
 #define na_get_elmsz nary_element_stride
-//#define na_element_stride nary_element_stride
-unsigned int nary_element_stride(VALUE nary);
+//#define na_element_stride cumo_nary_element_stride
+unsigned int cumo_nary_element_stride(VALUE nary);
 #define na_dtype_elmsz nary_dtype_element_stride
 size_t nary_dtype_element_stride(VALUE klass);
 
@@ -69,12 +69,12 @@ void na_release_lock(VALUE); // currently do nothing
 
 // used in reduce methods
 #define na_reduce_dimension nary_reduce_dimension
-VALUE nary_reduce_dimension(int argc, VALUE *argv, int naryc, VALUE *naryv,
-                            ndfunc_t *ndf, na_iter_func_t nan_iter);
+VALUE cumo_nary_reduce_dimension(int argc, VALUE *argv, int naryc, VALUE *naryv,
+                                 ndfunc_t *ndf, na_iter_func_t nan_iter);
 
 #define na_reduce_options nary_reduce_options
-VALUE nary_reduce_options(VALUE axes, VALUE *opts, int naryc, VALUE *naryv,
-                          ndfunc_t *ndf);
+VALUE cumo_nary_reduce_options(VALUE axes, VALUE *opts, int naryc, VALUE *naryv,
+                               ndfunc_t *ndf);
 
 // ndloop
 VALUE cumo_na_ndloop(ndfunc_t *nf, int argc, ...);

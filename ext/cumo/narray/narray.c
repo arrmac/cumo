@@ -281,7 +281,7 @@ cumo_na_setup_shape(narray_t *na, int ndim, size_t *shape)
     int i;
     size_t size;
 
-    na_alloc_shape(na, ndim);
+    cumo_na_alloc_shape(na, ndim);
 
     if (ndim==0) {
         na->size = 1;
@@ -303,7 +303,7 @@ na_setup(VALUE self, int ndim, size_t *shape)
 {
     narray_t *na;
     GetNArray(self,na);
-    na_setup_shape(na, ndim, shape);
+    cumo_na_setup_shape(na, ndim, shape);
 }
 
 
@@ -361,7 +361,7 @@ na_initialize(VALUE self, VALUE args)
     }
     shape = ALLOCA_N(size_t, ndim);
     // setup size_t shape[] from VALUE shape argument
-    na_array_to_internal_shape(self, v, shape);
+    cumo_na_array_to_internal_shape(self, v, shape);
     na_setup(self, ndim, shape);
 
     return self;
@@ -384,7 +384,7 @@ cumo_nary_view_new(VALUE klass, int ndim, size_t *shape)
 {
     volatile VALUE obj;
 
-    obj = na_s_allocate_view(klass);
+    obj = cumo_na_s_allocate_view(klass);
     na_setup(obj, ndim, shape);
     return obj;
 }
@@ -405,7 +405,7 @@ na_initialize_copy(VALUE self, VALUE orig)
 
     na_setup(self,NA_NDIM(na),NA_SHAPE(na));
     na_store(self,orig);
-    na_copy_flags(orig,self);
+    cumo_na_copy_flags(orig, self);
     return self;
 }
 
@@ -668,7 +668,7 @@ cumo_na_release_lock(VALUE self)
 
     switch(NA_TYPE(na)) {
     case NARRAY_VIEW_T:
-        na_release_lock(NA_VIEW_DATA(na));
+        cumo_na_release_lock(NA_VIEW_DATA(na));
         break;
     }
 }
@@ -862,8 +862,8 @@ cumo_na_check_contiguous(VALUE self)
         if (NA_VIEW_STRIDX(na)==0) {
             return Qtrue;
         }
-        if (na_check_ladder(self,0)==Qtrue) {
-            elmsz = nary_element_stride(self);
+        if (cumo_na_check_ladder(self, 0)==Qtrue) {
+            elmsz = cumo_nary_element_stride(self);
             if (elmsz == NA_STRIDE_AT(na,NA_NDIM(na)-1)) {
                 return Qtrue;
             }
@@ -894,18 +894,18 @@ cumo_na_make_view(VALUE self)
     GetNArray(self,na);
     nd = na->ndim;
 
-    view = na_s_allocate_view(CLASS_OF(self));
+    view = cumo_na_s_allocate_view(CLASS_OF(self));
 
-    na_copy_flags(self, view);
+    cumo_na_copy_flags(self, view);
     GetNArrayView(view, na2);
 
-    na_setup_shape((narray_t*)na2, nd, na->shape);
+    cumo_na_setup_shape((narray_t *) na2, nd, na->shape);
     na2->stridx = ALLOC_N(stridx_t,nd);
 
     switch(na->type) {
     case NARRAY_DATA_T:
     case NARRAY_FILEMAP_T:
-        stride = nary_element_stride(self);
+        stride = cumo_nary_element_stride(self);
         for (i=nd; i--;) {
             SDX_SET_STRIDE(na2->stridx[i],stride);
             stride *= na->shape[i];
@@ -969,7 +969,7 @@ cumo_na_expand_dims(VALUE self, VALUE vdim)
         dim += nd+1;
     }
 
-    view = na_make_view(self);
+    view = cumo_na_make_view(self);
     GetNArrayView(view, na2);
 
     shape = ALLOC_N(size_t,nd+1);
@@ -1025,21 +1025,21 @@ cumo_nary_reverse(int argc, VALUE *argv, VALUE self)
     GetNArray(self,na);
     nd = na->ndim;
 
-    view = na_s_allocate_view(CLASS_OF(self));
+    view = cumo_na_s_allocate_view(CLASS_OF(self));
 
-    na_copy_flags(self, view);
+    cumo_na_copy_flags(self, view);
     GetNArrayView(view, na2);
 
-    na_setup_shape((narray_t*)na2, nd, na->shape);
+    cumo_na_setup_shape((narray_t *) na2, nd, na->shape);
     na2->stridx = ALLOC_N(stridx_t,nd);
 
     switch(na->type) {
     case NARRAY_DATA_T:
     case NARRAY_FILEMAP_T:
-        stride = nary_element_stride(self);
+        stride = cumo_nary_element_stride(self);
         offset = 0;
         for (i=nd; i--;) {
-            if (na_test_reduce(reduce,i)) {
+            if (cumo_na_test_reduce(reduce, i)) {
                 offset += (na->shape[i]-1)*stride;
                 sign = -1;
             } else {
@@ -1059,7 +1059,7 @@ cumo_nary_reverse(int argc, VALUE *argv, VALUE self)
             if (SDX_IS_INDEX(na1->stridx[i])) {
                 idx1 = SDX_GET_INDEX(na1->stridx[i]);
                 idx2 = ALLOC_N(size_t,n);
-                if (na_test_reduce(reduce,i)) {
+                if (cumo_na_test_reduce(reduce, i)) {
                     for (j=0; j<n; j++) {
                         idx2[n-1-j] = idx1[j];
                     }
@@ -1071,7 +1071,7 @@ cumo_nary_reverse(int argc, VALUE *argv, VALUE self)
                 SDX_SET_INDEX(na2->stridx[i],idx2);
             } else {
                 stride = SDX_GET_STRIDE(na1->stridx[i]);
-                if (na_test_reduce(reduce,i)) {
+                if (cumo_na_test_reduce(reduce, i)) {
                     offset += (n-1)*stride;
                     SDX_SET_STRIDE(na2->stridx[i],-stride);
                 } else {
@@ -1226,8 +1226,8 @@ nary_s_from_binary(int argc, VALUE *argv, VALUE type)
         shape[0] = len;
     }
 
-    vna = nary_new(type, nd, shape);
-    ptr = na_get_pointer_for_write(vna);
+    vna = cumo_nary_new(type, nd, shape);
+    ptr = cumo_na_get_pointer_for_write(vna);
 
     memcpy(ptr, RSTRING_PTR(vstr), byte_size);
 
@@ -1275,7 +1275,7 @@ nary_store_binary(int argc, VALUE *argv, VALUE self)
         rb_raise(rb_eArgError, "string is too short to store");
     }
 
-    ptr = na_get_pointer_for_write(self);
+    ptr = cumo_na_get_pointer_for_write(self);
     memcpy(ptr, RSTRING_PTR(vstr)+offset, byte_size);
 
     return SIZET2NUM(byte_size);
@@ -1296,14 +1296,14 @@ nary_to_binary(VALUE self)
 
     GetNArray(self,na);
     if (na->type == NARRAY_VIEW_T) {
-        if (na_check_contiguous(self)==Qtrue) {
+        if (cumo_na_check_contiguous(self)==Qtrue) {
             offset = NA_VIEW_OFFSET(na);
         } else {
             self = rb_funcall(self,id_dup,0);
         }
     }
     len = NUM2SIZET(nary_byte_size(self));
-    ptr = na_get_pointer_for_read(self);
+    ptr = cumo_na_get_pointer_for_read(self);
     str = rb_usascii_str_new(ptr+offset,len);
     RB_GC_GUARD(self);
     return str;
@@ -1329,13 +1329,13 @@ nary_marshal_dump(VALUE self)
         size_t offset=0;
         GetNArray(self,na);
         if (na->type == NARRAY_VIEW_T) {
-            if (na_check_contiguous(self)==Qtrue) {
+            if (cumo_na_check_contiguous(self)==Qtrue) {
                 offset = NA_VIEW_OFFSET(na);
             } else {
                 self = rb_funcall(self,id_dup,0);
             }
         }
-        ptr = (VALUE*)na_get_pointer_for_read(self);
+        ptr = (VALUE*) cumo_na_get_pointer_for_read(self);
         rb_ary_push(a, rb_ary_new4(NA_SIZE(na), ptr+offset));
     } else {
         rb_ary_push(a, nary_to_binary(self));
@@ -1344,7 +1344,7 @@ nary_marshal_dump(VALUE self)
     return a;
 }
 
-VALUE na_inplace( VALUE self );
+VALUE cumo_na_inplace(VALUE self);
 /*
   Load marshal data.
   @overload marshal_load(data)
@@ -1379,12 +1379,12 @@ nary_marshal_load(VALUE self, VALUE a)
         if (RARRAY_LEN(v) != (long)NA_SIZE(na)) {
             rb_raise(rb_eArgError,"RObject content size mismatch");
         }
-        ptr = na_get_pointer_for_write(self);
+        ptr = cumo_na_get_pointer_for_write(self);
         memcpy(ptr, RARRAY_PTR(v), NA_SIZE(na)*sizeof(VALUE));
     } else {
         nary_store_binary(1,&v,self);
         if (TEST_BYTE_SWAPPED(self)) {
-            rb_funcall(na_inplace(self),id_to_host,0);
+            rb_funcall(cumo_na_inplace(self),id_to_host,0);
             REVERSE_ENDIAN(self); // correct behavior??
         }
     }
@@ -1531,7 +1531,7 @@ na_get_reduce_flag_from_axes(VALUE na_obj, VALUE axes)
 
 VALUE
 cumo_nary_reduce_options(VALUE axes, VALUE *opts, int naryc, VALUE *naryv,
-                    ndfunc_t *ndf)
+                         ndfunc_t *ndf)
 {
     int  max_arg;
     VALUE reduce;
@@ -1566,7 +1566,7 @@ cumo_nary_reduce_options(VALUE axes, VALUE *opts, int naryc, VALUE *naryv,
 
 VALUE
 cumo_nary_reduce_dimension(int argc, VALUE *argv, int naryc, VALUE *naryv,
-                      ndfunc_t *ndf, na_iter_func_t iter_nan)
+                           ndfunc_t *ndf, na_iter_func_t iter_nan)
 {
     long narg;
     VALUE axes;
@@ -1591,7 +1591,7 @@ cumo_nary_reduce_dimension(int argc, VALUE *argv, int naryc, VALUE *naryv,
 /*
   Return true if column major.
 */
-VALUE cumo_na_column_major_p( VALUE self )
+VALUE cumo_na_column_major_p(VALUE self)
 {
     if (TEST_COLUMN_MAJOR(self))
 	return Qtrue;
@@ -1602,7 +1602,7 @@ VALUE cumo_na_column_major_p( VALUE self )
 /*
   Return true if row major.
 */
-VALUE cumo_na_row_major_p( VALUE self )
+VALUE cumo_na_row_major_p(VALUE self)
 {
     if (TEST_ROW_MAJOR(self))
 	return Qtrue;
@@ -1614,7 +1614,7 @@ VALUE cumo_na_row_major_p( VALUE self )
 /*
   Return true if byte swapped.
 */
-VALUE cumo_na_byte_swapped_p( VALUE self )
+VALUE cumo_na_byte_swapped_p(VALUE self)
 {
     if (TEST_BYTE_SWAPPED(self))
       return Qtrue;
@@ -1624,7 +1624,7 @@ VALUE cumo_na_byte_swapped_p( VALUE self )
 /*
   Return true if not byte swapped.
 */
-VALUE cumo_na_host_order_p( VALUE self )
+VALUE cumo_na_host_order_p(VALUE self)
 {
     if (TEST_BYTE_SWAPPED(self))
       return Qfalse;
@@ -1639,7 +1639,7 @@ VALUE cumo_na_host_order_p( VALUE self )
 VALUE cumo_na_inplace( VALUE self )
 {
     VALUE view = self;
-    view = na_make_view(self);
+    view = cumo_na_make_view(self);
     SET_INPLACE(view);
     return view;
 }
@@ -1648,13 +1648,13 @@ VALUE cumo_na_inplace( VALUE self )
   Set inplace flag to self.
   @return [Cumo::NArray] self
 */
-VALUE cumo_na_inplace_bang( VALUE self )
+VALUE cumo_na_inplace_bang(VALUE self)
 {
     SET_INPLACE(self);
     return self;
 }
 
-VALUE cumo_na_inplace_store( VALUE self, VALUE val )
+VALUE cumo_na_inplace_store(VALUE self, VALUE val)
 {
     if (self==val)
         return self;
@@ -1665,7 +1665,7 @@ VALUE cumo_na_inplace_store( VALUE self, VALUE val )
 /*
   Return true if inplace flagged.
 */
-VALUE cumo_na_inplace_p( VALUE self )
+VALUE cumo_na_inplace_p(VALUE self)
 {
     if (TEST_INPLACE(self))
         return Qtrue;
@@ -1677,7 +1677,7 @@ VALUE cumo_na_inplace_p( VALUE self )
   Unset inplace flag to self.
   @return [Cumo::NArray] self
 */
-VALUE cumo_na_out_of_place_bang( VALUE self )
+VALUE cumo_na_out_of_place_bang(VALUE self)
 {
     UNSET_INPLACE(self);
     return self;
@@ -1885,13 +1885,13 @@ Init_cumo_narray()
     rb_define_alias (cumo_cNArray, "rank","ndim");
     rb_define_method(cumo_cNArray, "empty?", na_empty_p, 0);
 
-    rb_define_method(cumo_cNArray, "debug_info", nary_debug_info, 0);
+    rb_define_method(cumo_cNArray, "debug_info", cumo_nary_debug_info, 0);
 
-    rb_define_method(cumo_cNArray, "contiguous?", na_check_contiguous, 0);
+    rb_define_method(cumo_cNArray, "contiguous?", cumo_na_check_contiguous, 0);
 
-    rb_define_method(cumo_cNArray, "view", na_make_view, 0);
-    rb_define_method(cumo_cNArray, "expand_dims", na_expand_dims, 1);
-    rb_define_method(cumo_cNArray, "reverse", nary_reverse, -1);
+    rb_define_method(cumo_cNArray, "view", cumo_na_make_view, 0);
+    rb_define_method(cumo_cNArray, "expand_dims", cumo_na_expand_dims, 1);
+    rb_define_method(cumo_cNArray, "reverse", cumo_nary_reverse, -1);
 
     rb_define_singleton_method(cumo_cNArray, "upcast", cumo_na_upcast, 1);
     rb_define_singleton_method(cumo_cNArray, "byte_size", nary_s_byte_size, 0);
@@ -1910,18 +1910,18 @@ Init_cumo_narray()
 
     rb_define_method(cumo_cNArray, "coerce", nary_coerce, 1);
 
-    rb_define_method(cumo_cNArray, "column_major?", na_column_major_p, 0);
-    rb_define_method(cumo_cNArray, "row_major?", na_row_major_p, 0);
-    rb_define_method(cumo_cNArray, "byte_swapped?", na_byte_swapped_p, 0);
-    rb_define_method(cumo_cNArray, "host_order?", na_host_order_p, 0);
+    rb_define_method(cumo_cNArray, "column_major?", cumo_na_column_major_p, 0);
+    rb_define_method(cumo_cNArray, "row_major?", cumo_na_row_major_p, 0);
+    rb_define_method(cumo_cNArray, "byte_swapped?", cumo_na_byte_swapped_p, 0);
+    rb_define_method(cumo_cNArray, "host_order?", cumo_na_host_order_p, 0);
 
-    rb_define_method(cumo_cNArray, "inplace", na_inplace, 0);
-    rb_define_method(cumo_cNArray, "inplace?", na_inplace_p, 0);
-    rb_define_method(cumo_cNArray, "inplace!", na_inplace_bang, 0);
-    rb_define_method(cumo_cNArray, "out_of_place!", na_out_of_place_bang, 0);
+    rb_define_method(cumo_cNArray, "inplace", cumo_na_inplace, 0);
+    rb_define_method(cumo_cNArray, "inplace?", cumo_na_inplace_p, 0);
+    rb_define_method(cumo_cNArray, "inplace!", cumo_na_inplace_bang, 0);
+    rb_define_method(cumo_cNArray, "out_of_place!", cumo_na_out_of_place_bang, 0);
     rb_define_alias (cumo_cNArray, "not_inplace!", "out_of_place!");
 
-    rb_define_method(cumo_cNArray, "==", na_equal, 1);
+    rb_define_method(cumo_cNArray, "==", cumo_na_equal, 1);
 
     id_allocate = rb_intern("allocate");
     id_contiguous_stride = rb_intern(CONTIGUOUS_STRIDE);

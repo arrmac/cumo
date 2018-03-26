@@ -630,7 +630,7 @@ nary_struct_cast_array(VALUE klass, VALUE rary)
 
     //vnc = na_ary_composition_for_struct(klass, rary);
     //Data_Get_Struct(vnc, na_compose_t, nc);
-    //nary = nary_new(klass, nc->ndim, nc->shape);
+    //nary = cumo_nary_new(klass, nc->ndim, nc->shape);
     nary = na_s_new_like(klass, rary);
     GetNArray(nary,na);
     //fprintf(stderr,"na->size=%lu\n",na->size);
