@@ -83,5 +83,5 @@ static VALUE
     }
     rb_funcall(idx, rb_intern("seq"), 0);
 
-    return na_ndloop(&ndf, 3, self, idx, reduce);
+    return cumo_na_ndloop(&ndf, 3, self, idx, reduce);
 }

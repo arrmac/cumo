@@ -80,7 +80,7 @@ static VALUE
     }
     g->idx1 = na_get_pointer_for_write(idx_1);
     g->idx0 = NULL;
-    na_ndloop3(&ndf, g, 1, self);
+    cumo_na_ndloop3(&ndf, g, 1, self);
     na_release_lock(idx_1);
     return idx_1;
 }

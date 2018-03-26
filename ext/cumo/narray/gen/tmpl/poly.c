@@ -45,6 +45,6 @@ static VALUE
         argv[i+1] = RARRAY_PTR(args)[i];
     }
     a = rb_ary_new4(argc+1, argv);
-    v = na_ndloop2(&ndf, a);
+    v = cumo_na_ndloop2(&ndf, a);
     return <%=type_name%>_extract(v);
 }

@@ -107,13 +107,13 @@ static VALUE
 
     if (RTEST(min)) {
         if (RTEST(max)) {
-            return na_ndloop(&ndf_both, 3, self, min, max);
+            return cumo_na_ndloop(&ndf_both, 3, self, min, max);
         } else {
-            return na_ndloop(&ndf_min, 2, self, min);
+            return cumo_na_ndloop(&ndf_min, 2, self, min);
         }
     } else {
         if (RTEST(max)) {
-            return na_ndloop(&ndf_max, 2, self, max);
+            return cumo_na_ndloop(&ndf_max, 2, self, max);
         }
     }
     rb_raise(rb_eArgError,"min and max are not given");

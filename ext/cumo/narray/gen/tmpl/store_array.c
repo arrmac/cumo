@@ -100,6 +100,6 @@ static VALUE
     ndfunc_arg_in_t ain[2] = {{OVERWRITE,0},{rb_cArray,0}};
     ndfunc_t ndf = {<%=c_iter%>, FULL_LOOP, 2, 0, ain, 0};
 
-    na_ndloop_store_rarray(&ndf, self, rary);
+    cumo_na_ndloop_store_rarray(&ndf, self, rary);
     return self;
 }

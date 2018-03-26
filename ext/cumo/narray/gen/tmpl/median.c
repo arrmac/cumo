@@ -61,5 +61,5 @@ static VALUE
     ndf.func = <%=c_iter%>;
     reduce = na_reduce_dimension(argc, argv, 1, &self, &ndf, 0);
   <% end %>
-    return na_ndloop(&ndf, 2, self, reduce);
+    return cumo_na_ndloop(&ndf, 2, self, reduce);
 }

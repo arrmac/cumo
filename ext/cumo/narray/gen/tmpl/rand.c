@@ -163,6 +163,6 @@ static VALUE
         rb_raise(rb_eArgError,"high must be larger than low");
     }
     <% end %>
-    na_ndloop3(&ndf, &g, 1, self);
+    cumo_na_ndloop3(&ndf, &g, 1, self);
     return self;
 }

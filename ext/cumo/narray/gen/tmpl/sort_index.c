@@ -105,7 +105,7 @@ static VALUE
     SHOW_CPU_WARNING_ONCE("<%=name%>", "<%=type_name%>");
     cudaDeviceSynchronize();
 
-    res = na_ndloop3(&ndf, buf, 3, self, idx, reduce);
+    res = cumo_na_ndloop3(&ndf, buf, 3, self, idx, reduce);
     rb_free_tmp_buffer(&tmp);
     return res;
 }

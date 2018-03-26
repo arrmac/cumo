@@ -112,7 +112,7 @@ static VALUE
     ndfunc_t ndf = {<%=c_iter%>, FULL_LOOP_NIP, 3,1, ain,aout};
 
     reduce = na_reduce_dimension(argc, argv, 1, &self, &ndf, 0);
-    v = na_ndloop(&ndf, 3, self, reduce, INT2FIX(<%=init_bit%>));
+    v = cumo_na_ndloop(&ndf, 3, self, reduce, INT2FIX(<%=init_bit%>));
     if (argc > 0) {
         return v;
     }

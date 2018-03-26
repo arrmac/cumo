@@ -2645,7 +2645,7 @@ uint32_minus(VALUE self)
 
     
 #line 131 &quot;narray/gen/tmpl/unary.c&quot;
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -3459,7 +3459,7 @@ uint32_abs(VALUE self)
     ndfunc_arg_out_t aout[1] = {{cRT,0}};
     ndfunc_t ndf = { iter_uint32_abs, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -3890,13 +3890,13 @@ uint32_clip(VALUE self, VALUE min, VALUE max)
 
     if (RTEST(min)) {
         if (RTEST(max)) {
-            return na_ndloop(&amp;ndf_both, 3, self, min, max);
+            return cumo_na_ndloop(&amp;ndf_both, 3, self, min, max);
         } else {
-            return na_ndloop(&amp;ndf_min, 2, self, min);
+            return cumo_na_ndloop(&amp;ndf_min, 2, self, min);
         }
     } else {
         if (RTEST(max)) {
-            return na_ndloop(&amp;ndf_max, 2, self, max);
+            return cumo_na_ndloop(&amp;ndf_max, 2, self, max);
         }
     }
     rb_raise(rb_eArgError,&quot;min and max are not given&quot;);
@@ -4081,7 +4081,7 @@ uint32_cumprod(int argc, VALUE *argv, VALUE self)
 #line 47 &quot;narray/gen/tmpl/cum.c&quot;
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, 0);
   
-    return na_ndloop(&amp;ndf, 2, self, reduce);
+    return cumo_na_ndloop(&amp;ndf, 2, self, reduce);
 }</pre>
     </td>
   </tr>
@@ -4202,7 +4202,7 @@ uint32_cumsum(int argc, VALUE *argv, VALUE self)
 #line 47 &quot;narray/gen/tmpl/cum.c&quot;
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, 0);
   
-    return na_ndloop(&amp;ndf, 2, self, reduce);
+    return cumo_na_ndloop(&amp;ndf, 2, self, reduce);
 }</pre>
     </td>
   </tr>
@@ -4393,7 +4393,7 @@ uint32_each(VALUE self)
     ndfunc_arg_in_t ain[1] = {{Qnil,0}};
     ndfunc_t ndf = {iter_uint32_each, FULL_LOOP_NIP, 1,0, ain,0};
 
-    na_ndloop(&amp;ndf, 1, self);
+    cumo_na_ndloop(&amp;ndf, 1, self);
     return self;
 }</pre>
     </td>
@@ -4485,7 +4485,7 @@ uint32_each_with_index(VALUE self)
     ndfunc_arg_in_t ain[1] = {{Qnil,0}};
     ndfunc_t ndf = {iter_uint32_each_with_index, FULL_LOOP_NIP, 1,0, ain,0};
 
-    na_ndloop_with_index(&amp;ndf, 1, self);
+    cumo_na_ndloop_with_index(&amp;ndf, 1, self);
     return self;
 }</pre>
     </td>
@@ -4872,7 +4872,7 @@ uint32_eye(int argc, VALUE *argv, VALUE self)
     *(ssize_t*)g = kofs;
     *(dtype*)(g+sizeof(ssize_t)) = data;
 
-    na_ndloop3(&amp;ndf, g, 1, self);
+    cumo_na_ndloop3(&amp;ndf, g, 1, self);
     return self;
 }</pre>
     </td>
@@ -4960,7 +4960,7 @@ uint32_fill(VALUE self, VALUE val)
     ndfunc_arg_in_t ain[2] = {{OVERWRITE,0},{sym_option}};
     ndfunc_t ndf = { iter_uint32_fill, FULL_LOOP, 2, 0, ain, 0 };
 
-    na_ndloop(&amp;ndf, 2, self, val);
+    cumo_na_ndloop(&amp;ndf, 2, self, val);
     return self;
 }</pre>
     </td>
@@ -5057,7 +5057,7 @@ uint32_format(int argc, VALUE *argv, VALUE self)
 
     rb_scan_args(argc, argv, &quot;01&quot;, &amp;fmt);
     cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
-    return na_ndloop(&amp;ndf, 2, self, fmt);
+    return cumo_na_ndloop(&amp;ndf, 2, self, fmt);
 }</pre>
     </td>
   </tr>
@@ -5151,7 +5151,7 @@ uint32_format_to_a(int argc, VALUE *argv, VALUE self)
 
     rb_scan_args(argc, argv, &quot;01&quot;, &amp;fmt);
     cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
-    return na_ndloop_cast_narray_to_rarray(&amp;ndf, self, fmt);
+    return cumo_na_ndloop_cast_narray_to_rarray(&amp;ndf, self, fmt);
 }</pre>
     </td>
   </tr>
@@ -5421,7 +5421,7 @@ VALUE
 uint32_inspect(VALUE ary)
 {
     cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
-    return na_ndloop_inspect(ary, iter_uint32_inspect, Qnil);
+    return cumo_na_ndloop_inspect(ary, iter_uint32_inspect, Qnil);
 }</pre>
     </td>
   </tr>
@@ -5708,7 +5708,7 @@ uint32_map(VALUE self)
     
     cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
     
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -5804,7 +5804,7 @@ uint32_map_with_index(VALUE self)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = {iter_uint32_map_with_index, FULL_LOOP, 1,1, ain,aout};
 
-    return na_ndloop_with_index(&amp;ndf, 1, self);
+    return cumo_na_ndloop_with_index(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -5928,7 +5928,7 @@ uint32_max(int argc, VALUE *argv, VALUE self)
 #line 52 &quot;narray/gen/tmpl/accum.c&quot;
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, 0);
   
-    v =  na_ndloop(&amp;ndf, 2, self, reduce);
+    v =  cumo_na_ndloop(&amp;ndf, 2, self, reduce);
   
     return uint32_extract(v);
   
@@ -6083,7 +6083,7 @@ uint32_max_index(int argc, VALUE *argv, VALUE self)
     }
     rb_funcall(idx, rb_intern(&quot;seq&quot;), 0);
 
-    return na_ndloop(&amp;ndf, 3, self, idx, reduce);
+    return cumo_na_ndloop(&amp;ndf, 3, self, idx, reduce);
 }</pre>
     </td>
   </tr>
@@ -6207,7 +6207,7 @@ uint32_median(int argc, VALUE *argv, VALUE self)
     ndf.func = iter_uint32_median;
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, 0);
   
-    return na_ndloop(&amp;ndf, 2, self, reduce);
+    return cumo_na_ndloop(&amp;ndf, 2, self, reduce);
 }</pre>
     </td>
   </tr>
@@ -6331,7 +6331,7 @@ uint32_min(int argc, VALUE *argv, VALUE self)
 #line 52 &quot;narray/gen/tmpl/accum.c&quot;
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, 0);
   
-    v =  na_ndloop(&amp;ndf, 2, self, reduce);
+    v =  cumo_na_ndloop(&amp;ndf, 2, self, reduce);
   
     return uint32_extract(v);
   
@@ -6486,7 +6486,7 @@ uint32_min_index(int argc, VALUE *argv, VALUE self)
     }
     rb_funcall(idx, rb_intern(&quot;seq&quot;), 0);
 
-    return na_ndloop(&amp;ndf, 3, self, idx, reduce);
+    return cumo_na_ndloop(&amp;ndf, 3, self, idx, reduce);
 }</pre>
     </td>
   </tr>
@@ -6606,7 +6606,7 @@ uint32_minmax(int argc, VALUE *argv, VALUE self)
 #line 44 &quot;narray/gen/tmpl/minmax.c&quot;
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, 0);
   
-    return na_ndloop(&amp;ndf, 2, self, reduce);
+    return cumo_na_ndloop(&amp;ndf, 2, self, reduce);
 }</pre>
     </td>
   </tr>
@@ -6978,7 +6978,7 @@ uint32_poly(VALUE self, VALUE args)
         argv[i+1] = RARRAY_PTR(args)[i];
     }
     a = rb_ary_new4(argc+1, argv);
-    v = na_ndloop2(&amp;ndf, a);
+    v = cumo_na_ndloop2(&amp;ndf, a);
     return uint32_extract(v);
 }</pre>
     </td>
@@ -7103,7 +7103,7 @@ uint32_prod(int argc, VALUE *argv, VALUE self)
 #line 52 &quot;narray/gen/tmpl/accum.c&quot;
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, 0);
   
-    v =  na_ndloop(&amp;ndf, 2, self, reduce);
+    v =  cumo_na_ndloop(&amp;ndf, 2, self, reduce);
   
     return uint32_extract(v);
   
@@ -7231,7 +7231,7 @@ uint32_ptp(int argc, VALUE *argv, VALUE self)
 #line 52 &quot;narray/gen/tmpl/accum.c&quot;
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, 0);
   
-    v =  na_ndloop(&amp;ndf, 2, self, reduce);
+    v =  cumo_na_ndloop(&amp;ndf, 2, self, reduce);
   
     return uint32_extract(v);
   
@@ -7400,7 +7400,7 @@ uint32_rand(int argc, VALUE *args, VALUE self)
         rb_raise(rb_eArgError,&quot;high must be larger than low&quot;);
     }
     
-    na_ndloop3(&amp;ndf, &amp;g, 1, self);
+    cumo_na_ndloop3(&amp;ndf, &amp;g, 1, self);
     return self;
 }</pre>
     </td>
@@ -7478,7 +7478,7 @@ uint32_reciprocal(VALUE self)
 
     
 #line 131 &quot;narray/gen/tmpl/unary.c&quot;
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -7628,7 +7628,7 @@ uint32_seq(int argc, VALUE *args, VALUE self)
     if (vstep!=Qnil) {g-&gt;step = NUM2DBL(vstep);}
 
 #line 110 &quot;narray/gen/tmpl/seq.c&quot;
-    na_ndloop3(&amp;ndf, g, 1, self);
+    cumo_na_ndloop3(&amp;ndf, g, 1, self);
     return self;
 }</pre>
     </td>
@@ -7706,7 +7706,7 @@ uint32_sign(VALUE self)
 
     
 #line 131 &quot;narray/gen/tmpl/unary.c&quot;
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -7824,7 +7824,7 @@ uint32_sort(int argc, VALUE *argv, VALUE self)
     ndf.func = iter_uint32_sort;
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, 0);
   
-    na_ndloop(&amp;ndf, 2, self, reduce);
+    cumo_na_ndloop(&amp;ndf, 2, self, reduce);
     return self;
 }</pre>
     </td>
@@ -7998,7 +7998,7 @@ uint32_sort_index(int argc, VALUE *argv, VALUE self)
     SHOW_CPU_WARNING_ONCE(&quot;sort_index&quot;, &quot;uint32&quot;);
     cudaDeviceSynchronize();
 
-    res = na_ndloop3(&amp;ndf, buf, 3, self, idx, reduce);
+    res = cumo_na_ndloop3(&amp;ndf, buf, 3, self, idx, reduce);
     rb_free_tmp_buffer(&amp;tmp);
     return res;
 }</pre>
@@ -8077,7 +8077,7 @@ uint32_square(VALUE self)
 
     
 #line 131 &quot;narray/gen/tmpl/unary.c&quot;
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -8487,7 +8487,7 @@ uint32_sum(int argc, VALUE *argv, VALUE self)
 #line 52 &quot;narray/gen/tmpl/accum.c&quot;
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, 0);
   
-    v =  na_ndloop(&amp;ndf, 2, self, reduce);
+    v =  cumo_na_ndloop(&amp;ndf, 2, self, reduce);
   
     return uint32_extract(v);
   
@@ -8559,7 +8559,7 @@ uint32_to_a(VALUE self)
     ndfunc_arg_out_t aout[1] = {{rb_cArray,0}}; // dummy?
     ndfunc_t ndf = { iter_uint32_to_a, FULL_LOOP_NIP, 3, 1, ain, aout };
     cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
-    return na_ndloop_cast_narray_to_rarray(&amp;ndf, self, Qnil);
+    return cumo_na_ndloop_cast_narray_to_rarray(&amp;ndf, self, Qnil);
 }</pre>
     </td>
   </tr>
@@ -8740,7 +8740,7 @@ uint32_bit_not(VALUE self)
 
     
 #line 131 &quot;narray/gen/tmpl/unary.c&quot;
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>

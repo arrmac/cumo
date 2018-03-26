@@ -889,7 +889,7 @@ dfloat_math_s_acos(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_acos, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -982,7 +982,7 @@ dfloat_math_s_acosh(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_acosh, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -1075,7 +1075,7 @@ dfloat_math_s_asin(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_asin, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -1168,7 +1168,7 @@ dfloat_math_s_asinh(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_asinh, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -1261,7 +1261,7 @@ dfloat_math_s_atan(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_atan, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -1368,7 +1368,7 @@ dfloat_math_s_atan2(VALUE mod, VALUE a1, VALUE a2)
     ndfunc_arg_in_t ain[2] = {{cT,0},{cT,0}};
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_atan2, STRIDE_LOOP, 2, 1, ain, aout };
-    return na_ndloop(&amp;ndf, 2, a1, a2);
+    return cumo_na_ndloop(&amp;ndf, 2, a1, a2);
 }</pre>
     </td>
   </tr>
@@ -1461,7 +1461,7 @@ dfloat_math_s_atanh(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_atanh, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -1554,7 +1554,7 @@ dfloat_math_s_cbrt(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_cbrt, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -1647,7 +1647,7 @@ dfloat_math_s_cos(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_cos, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -1740,7 +1740,7 @@ dfloat_math_s_cosh(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_cosh, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -1833,7 +1833,7 @@ dfloat_math_s_erf(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_erf, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -1926,7 +1926,7 @@ dfloat_math_s_erfc(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_erfc, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -2019,7 +2019,7 @@ dfloat_math_s_exp(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_exp, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -2112,7 +2112,7 @@ dfloat_math_s_exp10(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_exp10, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -2205,7 +2205,7 @@ dfloat_math_s_exp2(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_exp2, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -2298,7 +2298,7 @@ dfloat_math_s_expm1(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_expm1, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -2385,7 +2385,7 @@ dfloat_math_s_frexp(VALUE mod, VALUE a1)
     ndfunc_arg_in_t ain[1] = {{cT,0}};
     ndfunc_arg_out_t aout[2] = {{cT,0},{cumo_cInt32,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_frexp, STRIDE_LOOP, 1,2, ain,aout };
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -2492,7 +2492,7 @@ dfloat_math_s_hypot(VALUE mod, VALUE a1, VALUE a2)
     ndfunc_arg_in_t ain[2] = {{cT,0},{cT,0}};
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_hypot, STRIDE_LOOP, 2, 1, ain, aout };
-    return na_ndloop(&amp;ndf, 2, a1, a2);
+    return cumo_na_ndloop(&amp;ndf, 2, a1, a2);
 }</pre>
     </td>
   </tr>
@@ -2599,7 +2599,7 @@ dfloat_math_s_ldexp(VALUE mod, VALUE a1, VALUE a2)
     ndfunc_arg_in_t ain[2] = {{cT,0},{cT,0}};
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_ldexp, STRIDE_LOOP, 2, 1, ain, aout };
-    return na_ndloop(&amp;ndf, 2, a1, a2);
+    return cumo_na_ndloop(&amp;ndf, 2, a1, a2);
 }</pre>
     </td>
   </tr>
@@ -2692,7 +2692,7 @@ dfloat_math_s_log(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_log, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -2785,7 +2785,7 @@ dfloat_math_s_log10(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_log10, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -2878,7 +2878,7 @@ dfloat_math_s_log1p(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_log1p, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -2971,7 +2971,7 @@ dfloat_math_s_log2(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_log2, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -3064,7 +3064,7 @@ dfloat_math_s_sin(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_sin, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -3157,7 +3157,7 @@ dfloat_math_s_sinc(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_sinc, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -3250,7 +3250,7 @@ dfloat_math_s_sinh(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_sinh, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -3343,7 +3343,7 @@ dfloat_math_s_sqrt(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_sqrt, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -3436,7 +3436,7 @@ dfloat_math_s_tan(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_tan, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>
@@ -3529,7 +3529,7 @@ dfloat_math_s_tanh(VALUE mod, VALUE a1)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_dfloat_math_s_tanh, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, a1);
+    return cumo_na_ndloop(&amp;ndf, 1, a1);
 }</pre>
     </td>
   </tr>

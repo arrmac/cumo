@@ -78,7 +78,7 @@ static VALUE
     reduce = na_reduce_dimension(argc-1, argv+1, 2, naryv, &ndf, 0);
     //<% end %>
 
-    v =  na_ndloop(&ndf, 4, self, argv[0], reduce, m_<%=name%>_init);
+    v =  cumo_na_ndloop(&ndf, 4, self, argv[0], reduce, m_<%=name%>_init);
     return <%=type_name%>_extract(v);
 }
 

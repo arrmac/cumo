@@ -1247,7 +1247,7 @@ bit_and(VALUE self, VALUE other)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_bit_and, FULL_LOOP, 2, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 2, self, other);
+    return cumo_na_ndloop(&amp;ndf, 2, self, other);
 }</pre>
     </td>
   </tr>
@@ -1664,7 +1664,7 @@ bit_xor(VALUE self, VALUE other)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_bit_xor, FULL_LOOP, 2, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 2, self, other);
+    return cumo_na_ndloop(&amp;ndf, 2, self, other);
 }</pre>
     </td>
   </tr>
@@ -1801,7 +1801,7 @@ bit_all_p(int argc, VALUE *argv, VALUE self)
     ndfunc_t ndf = {iter_bit_all_p, FULL_LOOP_NIP, 3,1, ain,aout};
 
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, 0);
-    v = na_ndloop(&amp;ndf, 3, self, reduce, INT2FIX(1));
+    v = cumo_na_ndloop(&amp;ndf, 3, self, reduce, INT2FIX(1));
     if (argc &gt; 0) {
         return v;
     }
@@ -2023,7 +2023,7 @@ bit_any_p(int argc, VALUE *argv, VALUE self)
     ndfunc_t ndf = {iter_bit_any_p, FULL_LOOP_NIP, 3,1, ain,aout};
 
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, 0);
-    v = na_ndloop(&amp;ndf, 3, self, reduce, INT2FIX(0));
+    v = cumo_na_ndloop(&amp;ndf, 3, self, reduce, INT2FIX(0));
     if (argc &gt; 0) {
         return v;
     }
@@ -2169,7 +2169,7 @@ bit_copy(VALUE self)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = {iter_bit_copy, FULL_LOOP, 1,1, ain,aout};
 
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -2284,7 +2284,7 @@ bit_count_false(int argc, VALUE *argv, VALUE self)
     ndfunc_t ndf = { iter_bit_count_false, FULL_LOOP_NIP, 3, 1, ain, aout };
 
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, 0);
-    v = na_ndloop(&amp;ndf, 3, self, reduce, INT2FIX(0));
+    v = cumo_na_ndloop(&amp;ndf, 3, self, reduce, INT2FIX(0));
     return rb_funcall(v,rb_intern(&quot;extract&quot;),0);
 }</pre>
     </td>
@@ -2400,7 +2400,7 @@ bit_count_true(int argc, VALUE *argv, VALUE self)
     ndfunc_t ndf = { iter_bit_count_true, FULL_LOOP_NIP, 3, 1, ain, aout };
 
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, 0);
-    v = na_ndloop(&amp;ndf, 3, self, reduce, INT2FIX(0));
+    v = cumo_na_ndloop(&amp;ndf, 3, self, reduce, INT2FIX(0));
     return rb_funcall(v,rb_intern(&quot;extract&quot;),0);
 }</pre>
     </td>
@@ -2492,7 +2492,7 @@ bit_each(VALUE self)
     ndfunc_arg_in_t ain[1] = {{Qnil,0}};
     ndfunc_t ndf = {iter_bit_each, FULL_LOOP_NIP, 1,0, ain,0};
 
-    na_ndloop(&amp;ndf, 1, self);
+    cumo_na_ndloop(&amp;ndf, 1, self);
     return self;
 }</pre>
     </td>
@@ -2584,7 +2584,7 @@ bit_each_with_index(VALUE self)
     ndfunc_arg_in_t ain[1] = {{Qnil,0}};
     ndfunc_t ndf = {iter_bit_each_with_index, FULL_LOOP_NIP, 1,0, ain,0};
 
-    na_ndloop_with_index(&amp;ndf, 1, self);
+    cumo_na_ndloop_with_index(&amp;ndf, 1, self);
     return self;
 }</pre>
     </td>
@@ -2673,7 +2673,7 @@ bit_eq(VALUE self, VALUE other)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_bit_eq, FULL_LOOP, 2, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 2, self, other);
+    return cumo_na_ndloop(&amp;ndf, 2, self, other);
 }</pre>
     </td>
   </tr>
@@ -2848,7 +2848,7 @@ bit_fill(VALUE self, VALUE val)
     ndfunc_arg_in_t ain[2] = {{OVERWRITE,0},{sym_option}};
     ndfunc_t ndf = {iter_bit_fill, FULL_LOOP, 2,0, ain,0};
 
-    na_ndloop(&amp;ndf, 2, self, val);
+    cumo_na_ndloop(&amp;ndf, 2, self, val);
     return self;
 }</pre>
     </td>
@@ -2945,7 +2945,7 @@ bit_format(int argc, VALUE *argv, VALUE self)
 
     rb_scan_args(argc, argv, &quot;01&quot;, &amp;fmt);
     cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
-    return na_ndloop(&amp;ndf, 2, self, fmt);
+    return cumo_na_ndloop(&amp;ndf, 2, self, fmt);
 }</pre>
     </td>
   </tr>
@@ -3039,7 +3039,7 @@ bit_format_to_a(int argc, VALUE *argv, VALUE self)
 
     rb_scan_args(argc, argv, &quot;01&quot;, &amp;fmt);
     cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
-    return na_ndloop_cast_narray_to_rarray(&amp;ndf, self, fmt);
+    return cumo_na_ndloop_cast_narray_to_rarray(&amp;ndf, self, fmt);
 }</pre>
     </td>
   </tr>
@@ -3101,7 +3101,7 @@ VALUE
 bit_inspect(VALUE ary)
 {
     cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
-    return na_ndloop_inspect(ary, iter_bit_inspect, Qnil);
+    return cumo_na_ndloop_inspect(ary, iter_bit_inspect, Qnil);
 }</pre>
     </td>
   </tr>
@@ -3247,7 +3247,7 @@ bit_mask(VALUE mask, VALUE val)
     g.elmsz = SIZEOF_VOIDP;
     g.idx1 = na_get_pointer_for_write(idx_1);
     g.idx0 = NULL;
-    na_ndloop3(&amp;ndf, &amp;g, 2, mask, val);
+    cumo_na_ndloop3(&amp;ndf, &amp;g, 2, mask, val);
 
     view = na_s_allocate_view(CLASS_OF(val));
     GetNArrayView(view, nv);
@@ -3702,7 +3702,7 @@ bit_to_a(VALUE self)
     ndfunc_arg_out_t aout[1] = {{rb_cArray,0}}; // dummy?
     ndfunc_t ndf = {iter_bit_to_a, FULL_LOOP_NIP, 3,1, ain,aout};
     cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
-    return na_ndloop_cast_narray_to_rarray(&amp;ndf, self, Qnil);
+    return cumo_na_ndloop_cast_narray_to_rarray(&amp;ndf, self, Qnil);
 }</pre>
     </td>
   </tr>
@@ -3804,7 +3804,7 @@ bit_where(VALUE self)
     }
     g-&gt;idx1 = na_get_pointer_for_write(idx_1);
     g-&gt;idx0 = NULL;
-    na_ndloop3(&amp;ndf, g, 1, self);
+    cumo_na_ndloop3(&amp;ndf, g, 1, self);
     na_release_lock(idx_1);
     return idx_1;
 }</pre>
@@ -3921,7 +3921,7 @@ bit_where2(VALUE self)
     }
     g-&gt;idx1 = na_get_pointer_for_write(idx_1);
     g-&gt;idx0 = na_get_pointer_for_write(idx_0);
-    na_ndloop3(&amp;ndf, g, 1, self);
+    cumo_na_ndloop3(&amp;ndf, g, 1, self);
     na_release_lock(idx_0);
     na_release_lock(idx_1);
     return rb_assoc_new(idx_1,idx_0);
@@ -4012,7 +4012,7 @@ bit_or(VALUE self, VALUE other)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { iter_bit_or, FULL_LOOP, 2, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 2, self, other);
+    return cumo_na_ndloop(&amp;ndf, 2, self, other);
 }</pre>
     </td>
   </tr>
@@ -4085,7 +4085,7 @@ bit_not(VALUE self)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = {iter_bit_not, FULL_LOOP, 1,1, ain,aout};
 
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>

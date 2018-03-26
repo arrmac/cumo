@@ -107,6 +107,6 @@ static VALUE
     if (vstep!=Qnil) {g->step = m_num_to_data(vstep);}
 <% end %>
 
-    na_ndloop3(&ndf, g, 1, self);
+    cumo_na_ndloop3(&ndf, g, 1, self);
     return self;
 }

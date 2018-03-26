@@ -58,5 +58,5 @@ static VALUE
 
     rb_scan_args(argc, argv, "01", &fmt);
     cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
-    return na_ndloop(&ndf, 2, self, fmt);
+    return cumo_na_ndloop(&ndf, 2, self, fmt);
 }

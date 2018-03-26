@@ -128,5 +128,5 @@ static VALUE
     <% if name == 'map' %>
     cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
     <% end %>
-    return na_ndloop(&ndf, 1, self);
+    return cumo_na_ndloop(&ndf, 1, self);
 }

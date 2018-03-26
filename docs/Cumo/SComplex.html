@@ -2521,7 +2521,7 @@ scomplex_minus(VALUE self)
 
     
 #line 131 &quot;narray/gen/tmpl/unary.c&quot;
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -3023,7 +3023,7 @@ scomplex_abs(VALUE self)
     ndfunc_arg_out_t aout[1] = {{cRT,0}};
     ndfunc_t ndf = { iter_scomplex_abs, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -3184,7 +3184,7 @@ scomplex_arg(VALUE self)
     ndfunc_arg_out_t aout[1] = {{cRT,0}};
     ndfunc_t ndf = { iter_scomplex_arg, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -3261,7 +3261,7 @@ scomplex_ceil(VALUE self)
 
     
 #line 131 &quot;narray/gen/tmpl/unary.c&quot;
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -3402,7 +3402,7 @@ scomplex_conj(VALUE self)
 
     
 #line 131 &quot;narray/gen/tmpl/unary.c&quot;
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -3627,7 +3627,7 @@ scomplex_cumprod(int argc, VALUE *argv, VALUE self)
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, iter_scomplex_cumprod_nan);
   
 #line 49 &quot;narray/gen/tmpl/cum.c&quot;
-    return na_ndloop(&amp;ndf, 2, self, reduce);
+    return cumo_na_ndloop(&amp;ndf, 2, self, reduce);
 }</pre>
     </td>
   </tr>
@@ -3748,7 +3748,7 @@ scomplex_cumsum(int argc, VALUE *argv, VALUE self)
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, iter_scomplex_cumsum_nan);
   
 #line 49 &quot;narray/gen/tmpl/cum.c&quot;
-    return na_ndloop(&amp;ndf, 2, self, reduce);
+    return cumo_na_ndloop(&amp;ndf, 2, self, reduce);
 }</pre>
     </td>
   </tr>
@@ -3839,7 +3839,7 @@ scomplex_each(VALUE self)
     ndfunc_arg_in_t ain[1] = {{Qnil,0}};
     ndfunc_t ndf = {iter_scomplex_each, FULL_LOOP_NIP, 1,0, ain,0};
 
-    na_ndloop(&amp;ndf, 1, self);
+    cumo_na_ndloop(&amp;ndf, 1, self);
     return self;
 }</pre>
     </td>
@@ -3931,7 +3931,7 @@ scomplex_each_with_index(VALUE self)
     ndfunc_arg_in_t ain[1] = {{Qnil,0}};
     ndfunc_t ndf = {iter_scomplex_each_with_index, FULL_LOOP_NIP, 1,0, ain,0};
 
-    na_ndloop_with_index(&amp;ndf, 1, self);
+    cumo_na_ndloop_with_index(&amp;ndf, 1, self);
     return self;
 }</pre>
     </td>
@@ -4314,7 +4314,7 @@ scomplex_eye(int argc, VALUE *argv, VALUE self)
     *(ssize_t*)g = kofs;
     *(dtype*)(g+sizeof(ssize_t)) = data;
 
-    na_ndloop3(&amp;ndf, g, 1, self);
+    cumo_na_ndloop3(&amp;ndf, g, 1, self);
     return self;
 }</pre>
     </td>
@@ -4402,7 +4402,7 @@ scomplex_fill(VALUE self, VALUE val)
     ndfunc_arg_in_t ain[2] = {{OVERWRITE,0},{sym_option}};
     ndfunc_t ndf = { iter_scomplex_fill, FULL_LOOP, 2, 0, ain, 0 };
 
-    na_ndloop(&amp;ndf, 2, self, val);
+    cumo_na_ndloop(&amp;ndf, 2, self, val);
     return self;
 }</pre>
     </td>
@@ -4480,7 +4480,7 @@ scomplex_floor(VALUE self)
 
     
 #line 131 &quot;narray/gen/tmpl/unary.c&quot;
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -4576,7 +4576,7 @@ scomplex_format(int argc, VALUE *argv, VALUE self)
 
     rb_scan_args(argc, argv, &quot;01&quot;, &amp;fmt);
     cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
-    return na_ndloop(&amp;ndf, 2, self, fmt);
+    return cumo_na_ndloop(&amp;ndf, 2, self, fmt);
 }</pre>
     </td>
   </tr>
@@ -4670,7 +4670,7 @@ scomplex_format_to_a(int argc, VALUE *argv, VALUE self)
 
     rb_scan_args(argc, argv, &quot;01&quot;, &amp;fmt);
     cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
-    return na_ndloop_cast_narray_to_rarray(&amp;ndf, self, fmt);
+    return cumo_na_ndloop_cast_narray_to_rarray(&amp;ndf, self, fmt);
 }</pre>
     </td>
   </tr>
@@ -4980,7 +4980,7 @@ scomplex_gemm(int argc, VALUE argv[], VALUE self)
         //CHECK_LEADING_GE(&quot;ldc&quot;,g.ldc,&quot;m&quot;,ma);
     }
     {
-        VALUE ans = na_ndloop3(&amp;ndf, &amp;g, 3, a, b, c);
+        VALUE ans = cumo_na_ndloop3(&amp;ndf, &amp;g, 3, a, b, c);
 
         if (ndf.nout == 1) { // c is not given.
             return ans;
@@ -5064,7 +5064,7 @@ scomplex_im(VALUE self)
 
     
 #line 131 &quot;narray/gen/tmpl/unary.c&quot;
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -5137,7 +5137,7 @@ scomplex_imag(VALUE self)
     ndfunc_arg_out_t aout[1] = {{cRT,0}};
     ndfunc_t ndf = { iter_scomplex_imag, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -5199,7 +5199,7 @@ VALUE
 scomplex_inspect(VALUE ary)
 {
     cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
-    return na_ndloop_inspect(ary, iter_scomplex_inspect, Qnil);
+    return cumo_na_ndloop_inspect(ary, iter_scomplex_inspect, Qnil);
 }</pre>
     </td>
   </tr>
@@ -5272,7 +5272,7 @@ scomplex_isfinite(VALUE self)
     ndfunc_arg_out_t aout[1] = {{cumo_cBit,0}};
     ndfunc_t ndf = { iter_scomplex_isfinite, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -5345,7 +5345,7 @@ scomplex_isinf(VALUE self)
     ndfunc_arg_out_t aout[1] = {{cumo_cBit,0}};
     ndfunc_t ndf = { iter_scomplex_isinf, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -5418,7 +5418,7 @@ scomplex_isnan(VALUE self)
     ndfunc_arg_out_t aout[1] = {{cumo_cBit,0}};
     ndfunc_t ndf = { iter_scomplex_isnan, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -5491,7 +5491,7 @@ scomplex_isneginf(VALUE self)
     ndfunc_arg_out_t aout[1] = {{cumo_cBit,0}};
     ndfunc_t ndf = { iter_scomplex_isneginf, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -5564,7 +5564,7 @@ scomplex_isposinf(VALUE self)
     ndfunc_arg_out_t aout[1] = {{cumo_cBit,0}};
     ndfunc_t ndf = { iter_scomplex_isposinf, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -5725,7 +5725,7 @@ scomplex_logseq(int argc, VALUE *args, VALUE self)
     } else {
         g-&gt;base = m_num_to_data(vbase);
     }
-    na_ndloop3(&amp;ndf, g, 1, self);
+    cumo_na_ndloop3(&amp;ndf, g, 1, self);
     return self;
 }</pre>
     </td>
@@ -5805,7 +5805,7 @@ scomplex_map(VALUE self)
     
     cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
     
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -5901,7 +5901,7 @@ scomplex_map_with_index(VALUE self)
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = {iter_scomplex_map_with_index, FULL_LOOP, 1,1, ain,aout};
 
-    return na_ndloop_with_index(&amp;ndf, 1, self);
+    return cumo_na_ndloop_with_index(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -6042,7 +6042,7 @@ scomplex_mean(int argc, VALUE *argv, VALUE self)
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, iter_scomplex_mean_nan);
   
 #line 54 &quot;narray/gen/tmpl/accum.c&quot;
-    v =  na_ndloop(&amp;ndf, 2, self, reduce);
+    v =  cumo_na_ndloop(&amp;ndf, 2, self, reduce);
   
     return scomplex_extract(v);
   
@@ -6538,7 +6538,7 @@ scomplex_poly(VALUE self, VALUE args)
         argv[i+1] = RARRAY_PTR(args)[i];
     }
     a = rb_ary_new4(argc+1, argv);
-    v = na_ndloop2(&amp;ndf, a);
+    v = cumo_na_ndloop2(&amp;ndf, a);
     return scomplex_extract(v);
 }</pre>
     </td>
@@ -6680,7 +6680,7 @@ scomplex_prod(int argc, VALUE *argv, VALUE self)
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, iter_scomplex_prod_nan);
   
 #line 54 &quot;narray/gen/tmpl/accum.c&quot;
-    v =  na_ndloop(&amp;ndf, 2, self, reduce);
+    v =  cumo_na_ndloop(&amp;ndf, 2, self, reduce);
   
     return scomplex_extract(v);
   
@@ -6857,7 +6857,7 @@ scomplex_rand(int argc, VALUE *args, VALUE self)
     }
     
 #line 166 &quot;narray/gen/tmpl/rand.c&quot;
-    na_ndloop3(&amp;ndf, &amp;g, 1, self);
+    cumo_na_ndloop3(&amp;ndf, &amp;g, 1, self);
     return self;
 }</pre>
     </td>
@@ -7021,7 +7021,7 @@ scomplex_rand_norm(int argc, VALUE *args, VALUE self)
     } else {
         g.sigma = 1;
     }
-    na_ndloop3(&amp;ndf, &amp;g, 1, self);
+    cumo_na_ndloop3(&amp;ndf, &amp;g, 1, self);
     return self;
 }</pre>
     </td>
@@ -7095,7 +7095,7 @@ scomplex_real(VALUE self)
     ndfunc_arg_out_t aout[1] = {{cRT,0}};
     ndfunc_t ndf = { iter_scomplex_real, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -7172,7 +7172,7 @@ scomplex_reciprocal(VALUE self)
 
     
 #line 131 &quot;narray/gen/tmpl/unary.c&quot;
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -7249,7 +7249,7 @@ scomplex_rint(VALUE self)
 
     
 #line 131 &quot;narray/gen/tmpl/unary.c&quot;
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -7390,7 +7390,7 @@ scomplex_rms(int argc, VALUE *argv, VALUE self)
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, iter_scomplex_rms_nan);
   
 #line 54 &quot;narray/gen/tmpl/accum.c&quot;
-    v =  na_ndloop(&amp;ndf, 2, self, reduce);
+    v =  cumo_na_ndloop(&amp;ndf, 2, self, reduce);
   
 #line 58 &quot;narray/gen/tmpl/accum.c&quot;
     return rb_funcall(v,rb_intern(&quot;extract&quot;),0);
@@ -7471,7 +7471,7 @@ scomplex_round(VALUE self)
 
     
 #line 131 &quot;narray/gen/tmpl/unary.c&quot;
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -7621,7 +7621,7 @@ scomplex_seq(int argc, VALUE *args, VALUE self)
     if (vstep!=Qnil) {g-&gt;step = m_num_to_data(vstep);}
 
 #line 110 &quot;narray/gen/tmpl/seq.c&quot;
-    na_ndloop3(&amp;ndf, g, 1, self);
+    cumo_na_ndloop3(&amp;ndf, g, 1, self);
     return self;
 }</pre>
     </td>
@@ -7667,7 +7667,7 @@ scomplex_set_imag(VALUE self, VALUE a1)
     ndfunc_arg_in_t ain[2] = {{OVERWRITE,0},{cRT,0}};
     ndfunc_t ndf = { iter_scomplex_set_imag, FULL_LOOP, 2, 0, ain, 0 };
 
-    na_ndloop(&amp;ndf, 2, self, a1);
+    cumo_na_ndloop(&amp;ndf, 2, self, a1);
     return a1;
 }</pre>
     </td>
@@ -7713,7 +7713,7 @@ scomplex_set_real(VALUE self, VALUE a1)
     ndfunc_arg_in_t ain[2] = {{OVERWRITE,0},{cRT,0}};
     ndfunc_t ndf = { iter_scomplex_set_real, FULL_LOOP, 2, 0, ain, 0 };
 
-    na_ndloop(&amp;ndf, 2, self, a1);
+    cumo_na_ndloop(&amp;ndf, 2, self, a1);
     return a1;
 }</pre>
     </td>
@@ -7791,7 +7791,7 @@ scomplex_sign(VALUE self)
 
     
 #line 131 &quot;narray/gen/tmpl/unary.c&quot;
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -7868,7 +7868,7 @@ scomplex_square(VALUE self)
 
     
 #line 131 &quot;narray/gen/tmpl/unary.c&quot;
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -8009,7 +8009,7 @@ scomplex_stddev(int argc, VALUE *argv, VALUE self)
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, iter_scomplex_stddev_nan);
   
 #line 54 &quot;narray/gen/tmpl/accum.c&quot;
-    v =  na_ndloop(&amp;ndf, 2, self, reduce);
+    v =  cumo_na_ndloop(&amp;ndf, 2, self, reduce);
   
 #line 58 &quot;narray/gen/tmpl/accum.c&quot;
     return rb_funcall(v,rb_intern(&quot;extract&quot;),0);
@@ -8464,7 +8464,7 @@ scomplex_sum(int argc, VALUE *argv, VALUE self)
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, iter_scomplex_sum_nan);
   
 #line 54 &quot;narray/gen/tmpl/accum.c&quot;
-    v =  na_ndloop(&amp;ndf, 2, self, reduce);
+    v =  cumo_na_ndloop(&amp;ndf, 2, self, reduce);
   
     return scomplex_extract(v);
   
@@ -8536,7 +8536,7 @@ scomplex_to_a(VALUE self)
     ndfunc_arg_out_t aout[1] = {{rb_cArray,0}}; // dummy?
     ndfunc_t ndf = { iter_scomplex_to_a, FULL_LOOP_NIP, 3, 1, ain, aout };
     cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
-    return na_ndloop_cast_narray_to_rarray(&amp;ndf, self, Qnil);
+    return cumo_na_ndloop_cast_narray_to_rarray(&amp;ndf, self, Qnil);
 }</pre>
     </td>
   </tr>
@@ -8613,7 +8613,7 @@ scomplex_trunc(VALUE self)
 
     
 #line 131 &quot;narray/gen/tmpl/unary.c&quot;
-    return na_ndloop(&amp;ndf, 1, self);
+    return cumo_na_ndloop(&amp;ndf, 1, self);
 }</pre>
     </td>
   </tr>
@@ -8754,7 +8754,7 @@ scomplex_var(int argc, VALUE *argv, VALUE self)
     reduce = na_reduce_dimension(argc, argv, 1, &amp;self, &amp;ndf, iter_scomplex_var_nan);
   
 #line 54 &quot;narray/gen/tmpl/accum.c&quot;
-    v =  na_ndloop(&amp;ndf, 2, self, reduce);
+    v =  cumo_na_ndloop(&amp;ndf, 2, self, reduce);
   
 #line 58 &quot;narray/gen/tmpl/accum.c&quot;
     return rb_funcall(v,rb_intern(&quot;extract&quot;),0);

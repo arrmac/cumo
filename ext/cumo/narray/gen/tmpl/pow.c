@@ -67,9 +67,9 @@ static VALUE
 
     // fixme : use na.integer?
     if (FIXNUM_P(other) || rb_obj_is_kind_of(other,cumo_cInt32)) {
-        return na_ndloop(&ndf_i, 2, self, other);
+        return cumo_na_ndloop(&ndf_i, 2, self, other);
     } else {
-        return na_ndloop(&ndf, 2, self, other);
+        return cumo_na_ndloop(&ndf, 2, self, other);
     }
 }
 

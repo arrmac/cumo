@@ -67,7 +67,7 @@ na_copy(VALUE self)
     ndfunc_arg_out_t aout[1] = {{INT2FIX(0),0}};
     ndfunc_t ndf = { iter_copy_bytes, FULL_LOOP, 1, 1, ain, aout };
 
-    v = na_ndloop(&ndf, 1, self);
+    v = cumo_na_ndloop(&ndf, 1, self);
     return v;
 }
 
@@ -110,7 +110,7 @@ nary_swap_byte(VALUE self)
     ndfunc_t ndf = { iter_swap_byte, FULL_LOOP|NDF_ACCEPT_BYTESWAP,
                      1, 1, ain, aout };
 
-    v = na_ndloop(&ndf, 1, self);
+    v = cumo_na_ndloop(&ndf, 1, self);
     if (self!=v) {
         na_copy_flags(self, v);
     }

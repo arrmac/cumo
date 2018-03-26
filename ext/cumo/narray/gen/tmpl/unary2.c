@@ -55,5 +55,5 @@ static VALUE
     ndfunc_arg_out_t aout[1] = {{<%=result_class%>,0}};
     ndfunc_t ndf = { <%=c_iter%>, FULL_LOOP, 1, 1, ain, aout };
 
-    return na_ndloop(&ndf, 1, self);
+    return cumo_na_ndloop(&ndf, 1, self);
 }

@@ -186,7 +186,7 @@ static VALUE
         //CHECK_LEADING_GE("ldc",g.ldc,"m",ma);
     }
     {
-        VALUE ans = na_ndloop3(&ndf, &g, 3, a, b, c);
+        VALUE ans = cumo_na_ndloop3(&ndf, &g, 3, a, b, c);
 
         if (ndf.nout == 1) { // c is not given.
             return ans;

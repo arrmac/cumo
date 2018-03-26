@@ -101,7 +101,7 @@ static VALUE
     g.elmsz = SIZEOF_VOIDP;
     g.idx1 = na_get_pointer_for_write(idx_1);
     g.idx0 = NULL;
-    na_ndloop3(&ndf, &g, 2, mask, val);
+    cumo_na_ndloop3(&ndf, &g, 2, mask, val);
 
     view = na_s_allocate_view(CLASS_OF(val));
     GetNArrayView(view, nv);

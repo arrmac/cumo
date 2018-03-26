@@ -51,7 +51,7 @@ static VALUE
   <% else %>
     reduce = na_reduce_dimension(argc, argv, 1, &self, &ndf, 0);
   <% end %>
-    v =  na_ndloop(&ndf, 2, self, reduce);
+    v =  cumo_na_ndloop(&ndf, 2, self, reduce);
   <% if result_class == "cT" %>
     return <%=type_name%>_extract(v);
   <% else %>

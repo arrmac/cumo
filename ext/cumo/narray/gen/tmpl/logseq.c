@@ -97,6 +97,6 @@ static VALUE
     } else {
         g->base = m_num_to_data(vbase);
     }
-    na_ndloop3(&ndf, g, 1, self);
+    cumo_na_ndloop3(&ndf, g, 1, self);
     return self;
 }

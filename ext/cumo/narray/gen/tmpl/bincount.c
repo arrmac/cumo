@@ -45,7 +45,7 @@ static VALUE
     ndfunc_t ndf = {<%=c_iter%>_<%=bits%>, NO_LOOP|NDF_STRIDE_LOOP|NDF_INDEX_LOOP,
                     1, 1, ain, aout};
 
-    return na_ndloop(&ndf, 1, self);
+    return cumo_na_ndloop(&ndf, 1, self);
 }
 <% end %>
 // ------- end of Integer count without weights -------
@@ -97,7 +97,7 @@ static VALUE
     ndfunc_t ndf = {<%=c_iter%>_<%=fn%>, NO_LOOP|NDF_STRIDE_LOOP,
                     2, 1, ain, aout};
 
-    return na_ndloop(&ndf, 2, self, weight);
+    return cumo_na_ndloop(&ndf, 2, self, weight);
 }
 <% end %>
 // ------- end of Float count with weights -------

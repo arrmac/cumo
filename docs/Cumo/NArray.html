@@ -10617,7 +10617,7 @@ nary_swap_byte(VALUE self)
     ndfunc_t ndf = { iter_swap_byte, FULL_LOOP|NDF_ACCEPT_BYTESWAP,
                      1, 1, ain, aout };
 
-    v = na_ndloop(&amp;ndf, 1, self);
+    v = cumo_na_ndloop(&amp;ndf, 1, self);
     if (self!=v) {
         na_copy_flags(self, v);
     }

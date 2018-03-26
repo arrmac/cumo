@@ -100,6 +100,6 @@ static VALUE
     *(ssize_t*)g = kofs;
     *(dtype*)(g+sizeof(ssize_t)) = data;
 
-    na_ndloop3(&ndf, g, 1, self);
+    cumo_na_ndloop3(&ndf, g, 1, self);
     return self;
 }

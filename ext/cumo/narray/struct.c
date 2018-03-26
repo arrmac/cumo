@@ -464,7 +464,7 @@ nary_struct_to_a(VALUE self)
     ndfunc_t ndf = {iter_nstruct_to_a, NO_LOOP, 3, 1, ain, aout};
 
     opt = nst_create_member_views(self);
-    return na_ndloop_cast_narray_to_rarray(&ndf, self, opt);
+    return cumo_na_ndloop_cast_narray_to_rarray(&ndf, self, opt);
 }
 
 
@@ -638,7 +638,7 @@ nary_struct_cast_array(VALUE klass, VALUE rary)
     if (na->size>0) {
         opt = nst_create_member_views(nary);
         rb_funcall(nary, rb_intern("allocate"), 0);
-        na_ndloop_store_rarray2(&ndf, nary, rary, opt);
+        cumo_na_ndloop_store_rarray2(&ndf, nary, rary, opt);
     }
     return nary;
 }
@@ -702,7 +702,7 @@ nary_struct_store_struct(VALUE self, VALUE obj)
     ndfunc_arg_in_t ain[2] = {{OVERWRITE,0},{Qnil,0}};
     ndfunc_t ndf = {iter_struct_store_struct, FULL_LOOP, 2, 0, ain, 0};
 
-    na_ndloop(&ndf, 2, self, obj);
+    cumo_na_ndloop(&ndf, 2, self, obj);
     return self;
 }
 
@@ -787,7 +787,7 @@ nary_struct_inspect(VALUE ary)
 {
     VALUE opt;
     opt = nst_create_member_views(ary);
-    return na_ndloop_inspect(ary, iter_struct_inspect, opt);
+    return cumo_na_ndloop_inspect(ary, iter_struct_inspect, opt);
 }
 
 

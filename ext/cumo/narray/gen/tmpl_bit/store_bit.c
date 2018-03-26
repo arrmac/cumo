@@ -61,6 +61,6 @@ static VALUE
     ndfunc_arg_in_t ain[2] = {{OVERWRITE,0},{Qnil,0}};
     ndfunc_t ndf = {<%=c_iter%>, FULL_LOOP, 2,0, ain,0};
 
-    na_ndloop(&ndf, 2, self, obj);
+    cumo_na_ndloop(&ndf, 2, self, obj);
     return self;
 }
