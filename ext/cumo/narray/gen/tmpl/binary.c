@@ -142,14 +142,26 @@ static void
 }
 #undef check_intdivzero
 
+static void
+<%=c_iter%>2_self(VALUE a, VALUE b)
+{
+    narray_t* na,nb;
+    GetNArray(a,na);
+    GetNArray(b,nb);
+}
+
 static VALUE
 <%=c_func%>_self(VALUE self, VALUE other)
 {
+    <% if type_name == 'robject' %>
     ndfunc_arg_in_t ain[2] = {{cT,0},{cT,0}};
     ndfunc_arg_out_t aout[1] = {{cT,0}};
     ndfunc_t ndf = { <%=c_iter%>, STRIDE_LOOP, 2, 1, ain, aout };
 
     return na_ndloop(&ndf, 2, self, other);
+    <% else %>
+    <%=c_iter%>2(self, other);
+    <% end %>
 }
 
 /*
