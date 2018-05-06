@@ -41,16 +41,28 @@ static VALUE
 {
     int nd;
     size_t pos;
-    char *ptr;
+    // char *ptr;
 
     nd = na_get_result_dimension(self, argc, argv, sizeof(dtype), &pos);
     if (nd) {
         return na_aref_main(argc, argv, self, 0, nd);
     } else {
-        // TODO(sonots): Return 0-dimensional narray rather than Synchronize()
-        ptr = na_get_pointer_for_read(self) + pos;
-        SHOW_SYNCHRONIZE_WARNING_ONCE("<%=name%>[] (0-dimension)", "<%=type_name%>");
-        cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
-        return m_extract(ptr);
+        // Numo code which return a ruby numeric object, it requires to synchronize
+        // ptr = na_get_pointer_for_read(self) + pos;
+        // return m_extract(ptr);
+
+        // Convert NARRAY_VIEW_T to NARRAY_DATA_T to create a new view
+        narray_t *na;
+        GetNArray(self,na);
+        if (na->type == NARRAY_VIEW_T) {
+            self = NA_VIEW_DATA(na);
+        }
+        // Create a 0-dimensional view
+        VALUE view = nary_view_new(CLASS_OF(self),/*ndim=*/0,NULL);
+        narray_view_t *nv;
+        GetNArrayView(view,nv);
+        nv->data = self;
+        nv->offset = pos;
+        return view;
     }
 }
