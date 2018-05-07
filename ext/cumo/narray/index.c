@@ -39,12 +39,19 @@ typedef struct {
 } na_index_arg_t;
 
 
+static inline int
+na_index_arg_size(int ndim)
+{
+   return ndim == 0 ? 1 : ndim;
+}
+
 static void
-print_index_arg(na_index_arg_t *q, int n)
+print_index_arg(na_index_arg_t *q, int ndim)
 {
     int i;
+    int q_size = na_index_arg_size(ndim);
     printf("na_index_arg_t = 0x%"SZF"x {\n",(size_t)q);
-    for (i=0; i<n; i++) {
+    for (i=0; i<q_size; i++) {
         printf("  q[%d].n=%"SZF"d\n",i,q[i].n);
         printf("  q[%d].beg=%"SZF"d\n",i,q[i].beg);
         printf("  q[%d].step=%"SZF"d\n",i,q[i].step);
@@ -75,12 +82,6 @@ static ID id_bracket;
 static ID id_shift_left;
 static ID id_mask;
 
-
-static int
-na_index_arg_size(int ndim)
-{
-   return ndim == 0 ? 1 : ndim;
-}
 
 static void
 na_index_set_step(na_index_arg_t *q, int i, size_t n, size_t beg, ssize_t step)
@@ -315,39 +316,40 @@ na_index_parse_each(volatile VALUE a, ssize_t size, int i, na_index_arg_t *q)
 static size_t
 na_index_parse_args(VALUE args, narray_t *na, na_index_arg_t *q, int ndim)
 {
-    int i, j, k, l, nidx;
+    int i, result_dim, orig_dim, l, nidx;
     size_t total=1;
     VALUE v;
 
     nidx = RARRAY_LEN(args);
+    cumo_debug_breakpoint();
 
-    for (i=j=k=0; i<nidx; i++) {
+    for (i=result_dim=orig_dim=0; i<nidx; i++) {
         v = RARRAY_AREF(args,i);
         // rest (ellipsis) dimension
         if (v==Qfalse) {
             for (l = ndim - (nidx-1); l>0; l--) {
-                //printf("i=%d j=%d k=%d l=%d ndim=%d nidx=%d\n",i,j,k,l,ndim,nidx);
-                na_index_parse_each(Qtrue, na->shape[k], k, &q[j]);
-                if (q[j].n > 1) {
-                    total *= q[j].n;
+                //printf("i=%d result_dim=%d orig_dim=%d l=%d ndim=%d nidx=%d\n",i,result_dim,orig_dim,l,ndim,nidx);
+                na_index_parse_each(Qtrue, na->shape[orig_dim], orig_dim, &q[result_dim]);
+                if (q[result_dim].n > 1) {
+                    total *= q[result_dim].n;
                 }
-                j++;
-                k++;
+                result_dim++;
+                orig_dim++;
             }
         }
         // new dimension
         else if (v==sym_new) {
-            na_index_parse_each(v, 1, k, &q[j]);
-            j++;
+            na_index_parse_each(v, 1, orig_dim, &q[result_dim]);
+            result_dim++;
         }
         // other dimention
         else {
-            na_index_parse_each(v, na->shape[k], k, &q[j]);
-            if (q[j].n > 1) {
-                total *= q[j].n;
+            na_index_parse_each(v, na->shape[orig_dim], orig_dim, &q[result_dim]);
+            if (q[result_dim].n > 1) {
+                total *= q[result_dim].n;
             }
-            j++;
-            k++;
+            result_dim++;
+            orig_dim++;
         }
     }
     return total;
@@ -569,7 +571,8 @@ VALUE na_aref_md_protected(VALUE data_value)
 
     na_index_parse_args(args, na1, q, ndim);
 
-    if (na_debug_flag) print_index_arg(q,ndim);
+    //if (na_debug_flag) print_index_arg(q,ndim);
+    print_index_arg(q,ndim);
 
     if (keep_dim) {
         ndim_new = ndim;
@@ -736,6 +739,7 @@ na_get_result_dimension(VALUE self, int argc, VALUE *argv, ssize_t stride, size_
         return -1;
     }
     idx = ALLOCA_N(ssize_t, argc);
+    cumo_debug_breakpoint();
     for (i=j=0; i<argc; i++) {
         a = argv[i];
         switch(TYPE(a)) {

@@ -741,10 +741,7 @@ nary_element_stride(VALUE v)
         v = NA_VIEW_DATA(na);
         GetNArray(v,na);
     }
-    if (na->type != NARRAY_DATA_T) {
-        cumo_debug_breakpoint();
-    }
-    //assert(na->type == NARRAY_DATA_T);
+    assert(na->type == NARRAY_DATA_T);
 
     info = (narray_type_info_t *)(RTYPEDDATA_TYPE(v)->data);
     return info->element_stride;
