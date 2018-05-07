@@ -76,6 +76,12 @@ static ID id_shift_left;
 static ID id_mask;
 
 
+static int
+na_index_arg_size(int ndim)
+{
+   return ndim == 0 ? 1 : ndim;
+}
+
 static void
 na_index_set_step(na_index_arg_t *q, int i, size_t n, size_t beg, ssize_t step)
 {
@@ -351,7 +357,7 @@ na_index_parse_args(VALUE args, narray_t *na, na_index_arg_t *q, int ndim)
 static void
 na_get_strides_nadata(const narray_data_t *na, ssize_t *strides, ssize_t elmsz)
 {
-    int i = na->base.ndim - 1;
+    int i = na_index_arg_size(na->base.ndim) - 1;
     strides[i] = elmsz;
     for (; i>0; i--) {
         strides[i-1] = strides[i] * na->base.shape[i];
@@ -369,11 +375,12 @@ na_index_aref_nadata(narray_data_t *na1, narray_view_t *na2,
     size_t  *index;
     ssize_t beg, step;
     VALUE m;
+    int q_size = na_index_arg_size(ndim);
 
-    strides_na1 = ALLOCA_N(ssize_t, na1->base.ndim);
+    strides_na1 = ALLOCA_N(ssize_t, na_index_arg_size(na1->base.ndim));
     na_get_strides_nadata(na1, strides_na1, elmsz);
 
-    for (i=j=0; i<ndim; i++) {
+    for (i=j=0; i<q_size; i++) {
         stride1 = strides_na1[q[i].orig_dim];
 
         // numeric index -- trim dimension
@@ -417,8 +424,9 @@ na_index_aref_naview(narray_view_t *na1, narray_view_t *na2,
 {
     int i, j;
     ssize_t total=1;
+    int q_size = na_index_arg_size(ndim);
 
-    for (i=j=0; i<ndim; i++) {
+    for (i=j=0; i<q_size; i++) {
         stridx_t sdx1 = na1->stridx[q[i].orig_dim];
         ssize_t size;
 
@@ -511,6 +519,7 @@ static int
 na_ndim_new_narray(int ndim, const na_index_arg_t *q)
 {
     int i, ndim_new=0;
+    if (ndim == 0) return 0;
     for (i=0; i<ndim; i++) {
         if (q[i].n>1 || q[i].step!=0) {
             ndim_new++;
@@ -530,10 +539,11 @@ typedef struct {
 static na_index_arg_t*
 na_allocate_index_args(int ndim)
 {
-    na_index_arg_t *q = ALLOC_N(na_index_arg_t, ndim);
+    int q_size = na_index_arg_size(ndim);
+    na_index_arg_t *q = ALLOC_N(na_index_arg_t, q_size);
     int i;
 
-    for (i=0; i<ndim; i++) {
+    for (i=0; i<q_size; i++) {
         q[i].idx = NULL;
     }
     return q;
@@ -552,6 +562,7 @@ VALUE na_aref_md_protected(VALUE data_value)
     int keep_dim = data->keep_dim;
 
     int ndim_new;
+    int q_size_new;
     VALUE view;
     narray_view_t *na2;
     ssize_t elmsz;
@@ -565,6 +576,7 @@ VALUE na_aref_md_protected(VALUE data_value)
     } else {
         ndim_new = na_ndim_new_narray(ndim, q);
     }
+    q_size_new = na_index_arg_size(ndim_new);
     view = na_s_allocate_view(CLASS_OF(self));
 
     na_copy_flags(self, view);
@@ -572,7 +584,7 @@ VALUE na_aref_md_protected(VALUE data_value)
 
     na_alloc_shape((narray_t*)na2, ndim_new);
 
-    na2->stridx = ALLOC_N(stridx_t,ndim_new);
+    na2->stridx = ALLOC_N(stridx_t,q_size_new);
 
     elmsz = nary_element_stride(self);
 
@@ -601,7 +613,8 @@ na_aref_md_ensure(VALUE data_value)
 {
     na_aref_md_data_t *data = (na_aref_md_data_t*)(data_value);
     int i;
-    for (i=0; i<data->ndim; i++) {
+    int q_size = na_index_arg_size(data->ndim);
+    for (i=0; i<q_size; i++) {
         xfree(data->q[i].idx);
     }
     xfree(data->q);
@@ -622,7 +635,7 @@ na_aref_md(int argc, VALUE *argv, VALUE self, int keep_dim, int result_nd)
 
     args = rb_ary_new4(argc,argv);
 
-    if (argc == 1 && result_nd == 1) {
+    if (argc == 1 && (result_nd == 1 || result_nd == 0)) {
         idx = argv[0];
         if (rb_obj_is_kind_of(idx, rb_cArray)) {
             idx = rb_apply(cumo_cNArray,id_bracket,idx);
