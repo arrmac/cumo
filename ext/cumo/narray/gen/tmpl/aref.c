@@ -45,28 +45,16 @@ static VALUE
 {
     int nd;
     size_t pos;
-    // char *ptr;
 
+    // Numo aref[] returns ruby numeric object for 0-dimensional array, but Cumo
+    // returns na_aref_md_data_t always not to synchronizes between GPU and CPU.
     nd = na_get_result_dimension(self, argc, argv, sizeof(dtype), &pos);
-    if (nd) {
-        return na_aref_main(argc, argv, self, 0, nd);
-    } else {
-        // Numo code which return a ruby numeric object, it requires to synchronize
-        // ptr = na_get_pointer_for_read(self) + pos;
-        // return m_extract(ptr);
+    return na_aref_main(argc, argv, self, 0, nd);
 
-        // Convert NARRAY_VIEW_T to NARRAY_DATA_T to create a new view
-        narray_t *na;
-        GetNArray(self,na);
-        if (na->type == NARRAY_VIEW_T) {
-            self = NA_VIEW_DATA(na);
-        }
-        // Create a 0-dimensional view
-        VALUE view = nary_view_new(CLASS_OF(self),/*ndim=*/0,NULL);
-        narray_view_t *nv;
-        GetNArrayView(view,nv);
-        nv->data = self;
-        nv->offset = pos;
-        return view;
-    }
+    //if (nd) {
+    //    return na_aref_main(argc, argv, self, 0, nd);
+    //} else {
+    //    ptr = na_get_pointer_for_read(self) + pos;
+    //    return m_extract(ptr);
+    //}
 }
