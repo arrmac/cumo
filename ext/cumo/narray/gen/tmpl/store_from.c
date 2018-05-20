@@ -2,7 +2,7 @@
 void <%="cumo_#{c_iter}_index_index_kernel_launch"%>(char *p1, char *p2, size_t *idx1, size_t *idx2, uint64_t n);
 void <%="cumo_#{c_iter}_stride_index_kernel_launch"%>(char *p1, char *p2, ssize_t s1, size_t *idx2, uint64_t n);
 void <%="cumo_#{c_iter}_index_stride_kernel_launch"%>(char *p1, char *p2, size_t *idx1, ssize_t s2, uint64_t n);
-void <%="cumo_#{c_iter}_stride_stride_kernel_launch"%>(char *p1, char *p2, ssize_t s1, ssize_t s2, uint64_t n);
+void <%="cumo_#{c_iter}_stride_stride_kernel_launch"%>(na_iarray_t* a1, na_iarray_t* a2, na_indexer_t* indexer);
 //<% end %>
 
 static void
@@ -62,7 +62,10 @@ static void
             if (idx1) {
                 <%="cumo_#{c_iter}_index_stride_kernel_launch"%>(p1,p2,idx1,s2,i);
             } else {
-                <%="cumo_#{c_iter}_stride_stride_kernel_launch"%>(p1,p2,s1,s2,i);
+                na_iarray_t a1 = na_make_iarray(&lp->args[0]);
+                na_iarray_t a2 = na_make_iarray(&lp->args[1]);
+                na_indexer_t indexer = na_make_indexer(&lp->args[0]);
+                <%="cumo_#{c_iter}_stride_stride_kernel_launch"%>(&a1,&a2,&indexer);
             }
         }
     }
@@ -74,7 +77,7 @@ static VALUE
 <%=c_func(:nodef)%>(VALUE self, VALUE obj)
 {
     ndfunc_arg_in_t ain[2] = {{OVERWRITE,0},{Qnil,0}};
-    ndfunc_t ndf = { <%=c_iter%>, FULL_LOOP, 2, 0, ain, 0 };
+    ndfunc_t ndf = { <%=c_iter%>, FULL_LOOP|NDF_INDEXER_LOOP, 2, 0, ain, 0 };
 
     na_ndloop(&ndf, 2, self, obj);
     return self;

@@ -1346,11 +1346,10 @@ ndloop_extract(VALUE results, ndfunc_t *nf)
     return results;
 }
 
-// TODO(sonots): Support idx by Indexer.
-/*static bool
+// TODO(sonots): Support idx access by Indexer.
+static bool
 _loop_is_using_idx(na_md_loop_t *lp)
 {
-    size_t c;
     int  i, j;
     int  nd = lp->ndim;
 
@@ -1358,28 +1357,17 @@ _loop_is_using_idx(na_md_loop_t *lp)
         rb_bug("bug? lp->ndim = %d\n", lp->ndim);
     }
 
-    // loop body
-    for (i=0,c=0;;) {
-        // i-th dimension
-        for (; i<nd; i++) {
-            // j-th argument
-            for (j=0; j<lp->narg; j++) {
-                if (LITER(lp,i,j).idx) {
-                    return true;
-                }
+    // i-th dimension
+    for (i=0; i<nd; i++) {
+        // j-th argument
+        for (j=0; j<lp->narg; j++) {
+            if (LITER(lp,i,j).idx) {
+                return true;
             }
         }
-        for (;;) {
-            if (i<=0) goto loop_end;
-            i--;
-            if (++c < lp->n[i]) break;
-            c = 0;
-        }
     }
- loop_end:
-    ;
     return false;
-}*/
+}
 
 static void
 loop_narray(ndfunc_t *nf, na_md_loop_t *lp);
@@ -1406,7 +1394,7 @@ ndloop_run(VALUE vlp)
     //}
 
     // CUMO: Do not use loop_narray, but directly process all dimensions with Indexer in user function for performance.
-    if (NDF_TEST(nf,NDF_INDEXER_LOOP)) {
+    if (NDF_TEST(nf,NDF_INDEXER_LOOP) && !_loop_is_using_idx(lp)) {
         // TODO(sonots): Support contract_loop (dimesion compressions) in reduction
         // contract loop
         if(!NDF_TEST(nf,NDF_FLAT_REDUCE) && lp->loop_func == loop_narray) {
