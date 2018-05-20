@@ -1,6 +1,7 @@
 #include <string.h>
 #include <ruby.h>
 #include "cumo/narray.h"
+#include "cumo/cuda/memory_pool.h"
 #include "cumo/cuda/runtime.h"
 #include "cumo/template.h"
 
@@ -136,13 +137,16 @@ na_parse_array(VALUE ary, int orig_dim, ssize_t size, na_index_arg_t *q)
     q->orig_dim = orig_dim;
 }
 
+void na_parse_array_index_kernel_launch(size_t* idx, ssize_t* nidxp, ssize_t size, size_t n);
+
 static void
 na_parse_narray_index(VALUE a, int orig_dim, ssize_t size, na_index_arg_t *q)
 {
     VALUE idx;
     narray_t *na;
     narray_data_t *nidx;
-    size_t k, n;
+    //size_t k, n;
+    size_t n;
     ssize_t *nidxp;
 
     GetNArray(a,na);
@@ -155,15 +159,15 @@ na_parse_narray_index(VALUE a, int orig_dim, ssize_t size, na_index_arg_t *q)
 
     GetNArrayData(idx,nidx);
     nidxp   = (ssize_t*)nidx->ptr;
-    q->idx  = ALLOC_N(size_t, n);
+    //q->idx  = ALLOC_N(size_t, n);
+    q->idx = (size_t*)cumo_cuda_runtime_malloc(sizeof(size_t) * n);
 
-    // ndixp is cuda memory (cuda narray)
-    SHOW_SYNCHRONIZE_WARNING_ONCE("na_parse_narray_index", "any");
-    cumo_cuda_runtime_check_status(cudaDeviceSynchronize());
+    //for (k=0; k<n; k++) {
+    //    q->idx[k] = na_range_check(nidxp[k], size, orig_dim);
+    //}
+    // TODO(sonots): range check
+    na_parse_array_index_kernel_launch(q->idx, nidxp, size, n);
 
-    for (k=0; k<n; k++) {
-        q->idx[k] = na_range_check(nidxp[k], size, orig_dim);
-    }
     q->n    = n;
     q->beg  = 0;
     q->step = 1;
@@ -623,7 +627,11 @@ na_aref_md_ensure(VALUE data_value)
     na_aref_md_data_t *data = (na_aref_md_data_t*)(data_value);
     int i;
     for (i=0; i<data->ndim; i++) {
-        xfree(data->q[i].idx);
+        if (cumo_cuda_runtime_is_device_memory(data->q[i].idx)) {
+            cumo_cuda_runtime_free((char*)(data->q[i].idx));
+        } else {
+            xfree(data->q[i].idx);
+        }
     }
     if (data->q) xfree(data->q);
     return Qnil;
